@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" class="scroll-smooth">
+<html lang="vi" class="scroll-smooth dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,83 +23,77 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+<body>
 
-    <!-- HEADER -->
-    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <!-- Logo -->
-                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('dashboard')">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 flex items-center justify-center text-white shadow-md" style="box-shadow:0 4px 14px rgba(16,185,129,0.45)">
-                        <i class="fa-solid fa-shield-halved text-xl animate-float"></i>
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h1 class="font-extrabold text-lg sm:text-xl tracking-tight bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent">
-                                GDQP & AN Pro
-                            </h1>
-                            <span class="hidden sm:inline-block text-[11px] font-bold uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300 border border-amber-300/50">
-                                127 Câu Chuẩn
-                            </span>
-                        </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Trắc nghiệm & Flashcard tự chứa không lỗi mạng</p>
-                    </div>
-                </div>
-
-                <!-- Desktop Nav -->
-                <nav class="hidden md:flex items-center space-x-1 bg-slate-100 dark:bg-slate-700/60 p-1 rounded-xl">
-                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
-                        <i class="fa-solid fa-chart-pie"></i> Tổng quan
-                    </button>
-                    <button onclick="switchTab('practice')" id="nav-practice" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
-                        <i class="fa-solid fa-pen-to-square"></i> Luyện Trắc Nghiệm
-                    </button>
-                    <button onclick="switchTab('exam')" id="nav-exam" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
-                        <i class="fa-solid fa-stopwatch"></i> Thi Thử
-                    </button>
-                    <button onclick="switchTab('flashcard')" id="nav-flashcard" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
-                        <i class="fa-solid fa-layer-group"></i> Flashcard
-                    </button>
-                    <button onclick="switchTab('search')" id="nav-search" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
-                        <i class="fa-solid fa-magnifying-glass"></i> Tra Cứu Nhanh
-                    </button>
-                </nav>
-
-                <!-- Actions -->
-                <div class="flex items-center gap-2">
-                    <button onclick="downloadHTMLFile()" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold shadow-sm transition flex items-center gap-1.5" title="Tải file HTML về máy">
-                        <i class="fa-solid fa-download"></i> <span class="hidden sm:inline">Tải File Web</span>
-                    </button>
-                    <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-200 transition" title="Đổi giao diện Sáng/Tối">
-                        <i id="theme-icon" class="fa-solid fa-moon text-base"></i>
-                    </button>
-                    <button onclick="openResetModal()" class="p-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/50 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-400 transition" title="Đặt lại tiến độ">
-                        <i class="fa-solid fa-rotate-right text-base"></i>
-                    </button>
-                </div>
+    <!-- ===== SIDEBAR ===== -->
+    <aside id="sidebar">
+        <div class="sidebar-logo" onclick="switchTab('dashboard')">
+            <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="logo-text">
+                <h1>GDQP & AN Pro</h1>
+                <p>127 Câu · Offline hoàn toàn</p>
             </div>
         </div>
 
-        <!-- Mobile Nav -->
-        <div class="md:hidden flex items-center justify-around border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 py-1.5 px-2">
-            <button onclick="switchTab('dashboard')" id="m-nav-dashboard" class="m-nav-btn flex flex-col items-center py-1 px-2 rounded-lg text-xs font-medium">
-                <i class="fa-solid fa-chart-pie text-sm mb-0.5"></i> Tổng quan
+        <div class="nav-section-label">Học tập</div>
+        <button class="nav-item active" id="sb-dashboard" onclick="switchTab('dashboard')">
+            <i class="fa-solid fa-chart-pie"></i> Tổng quan
+        </button>
+        <button class="nav-item" id="sb-practice" onclick="switchTab('practice')">
+            <i class="fa-solid fa-pen-to-square"></i> Luyện Trắc Nghiệm
+        </button>
+        <button class="nav-item" id="sb-exam" onclick="switchTab('exam')">
+            <i class="fa-solid fa-stopwatch"></i> Thi Thử
+        </button>
+        <button class="nav-item" id="sb-flashcard" onclick="switchTab('flashcard')">
+            <i class="fa-solid fa-layer-group"></i> Flashcard
+        </button>
+        <button class="nav-item" id="sb-search" onclick="switchTab('search')">
+            <i class="fa-solid fa-magnifying-glass"></i> Tra Cứu Nhanh
+        </button>
+
+        <div class="sidebar-bottom">
+            <button class="sidebar-action-btn" onclick="downloadHTMLFile()">
+                <i class="fa-solid fa-download"></i> Tải File Web
             </button>
-            <button onclick="switchTab('practice')" id="m-nav-practice" class="m-nav-btn flex flex-col items-center py-1 px-2 rounded-lg text-xs font-medium">
-                <i class="fa-solid fa-pen-to-square text-sm mb-0.5"></i> Luyện tập
-            </button>
-            <button onclick="switchTab('exam')" id="m-nav-exam" class="m-nav-btn flex flex-col items-center py-1 px-2 rounded-lg text-xs font-medium">
-                <i class="fa-solid fa-stopwatch text-sm mb-0.5"></i> Thi thử
-            </button>
-            <button onclick="switchTab('flashcard')" id="m-nav-flashcard" class="m-nav-btn flex flex-col items-center py-1 px-2 rounded-lg text-xs font-medium">
-                <i class="fa-solid fa-layer-group text-sm mb-0.5"></i> Thẻ nhớ
-            </button>
-            <button onclick="switchTab('search')" id="m-nav-search" class="m-nav-btn flex flex-col items-center py-1 px-2 rounded-lg text-xs font-medium">
-                <i class="fa-solid fa-magnifying-glass text-sm mb-0.5"></i> Tra cứu
+            <button class="sidebar-action-btn danger" onclick="openResetModal()">
+                <i class="fa-solid fa-rotate-right"></i> Đặt lại tiến độ
             </button>
         </div>
-    </header>
+    </aside>
+
+    <!-- ===== MOBILE HEADER ===== -->
+    <div id="mobile-header">
+        <div class="mob-logo">
+            <div class="mob-logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <h1>GDQP & AN Pro</h1>
+        </div>
+        <div class="mob-actions">
+            <button class="mob-btn" onclick="downloadHTMLFile()" title="Tải file"><i class="fa-solid fa-download"></i></button>
+            <button class="mob-btn danger" onclick="openResetModal()" title="Reset"><i class="fa-solid fa-rotate-right"></i></button>
+        </div>
+    </div>
+
+    <!-- ===== MOBILE BOTTOM NAV ===== -->
+    <nav id="mobile-nav">
+        <div class="mob-nav-items">
+            <button class="mob-nav-item active" id="mob-dashboard" onclick="switchTab('dashboard')">
+                <i class="fa-solid fa-chart-pie"></i> Tổng quan
+            </button>
+            <button class="mob-nav-item" id="mob-practice" onclick="switchTab('practice')">
+                <i class="fa-solid fa-pen-to-square"></i> Luyện tập
+            </button>
+            <button class="mob-nav-item" id="mob-exam" onclick="switchTab('exam')">
+                <i class="fa-solid fa-stopwatch"></i> Thi thử
+            </button>
+            <button class="mob-nav-item" id="mob-flashcard" onclick="switchTab('flashcard')">
+                <i class="fa-solid fa-layer-group"></i> Thẻ nhớ
+            </button>
+            <button class="mob-nav-item" id="mob-search" onclick="switchTab('search')">
+                <i class="fa-solid fa-magnifying-glass"></i> Tra cứu
+            </button>
+        </div>
+    </nav>
 
     <!-- MAIN CONTAINER -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -607,13 +601,26 @@
         }
 
         function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('active-tab');
+            });
             const target = document.getElementById(`tab-${tabName}`);
-            if (target) target.classList.remove('hidden');
+            if (target) {
+                target.classList.remove('hidden');
+                target.classList.add('active-tab');
+            }
 
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.className = 'nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:bg-white/60');
-            const active = document.getElementById(`nav-${tabName}`);
-            if (active) active.className = 'nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 shadow-sm';
+            // Update sidebar nav
+            document.querySelectorAll('#sidebar .nav-item').forEach(btn => btn.classList.remove('active'));
+            const sbActive = document.getElementById(`sb-${tabName}`);
+            if (sbActive) sbActive.classList.add('active');
+
+            // Update mobile bottom nav
+            document.querySelectorAll('#mobile-nav .mob-nav-item').forEach(btn => btn.classList.remove('active'));
+            const mobActive = document.getElementById(`mob-${tabName}`);
+            if (mobActive) mobActive.classList.add('active');
 
             if (tabName === 'dashboard') updateDashboardUI();
             if (tabName === 'practice' && practiceList.length === 0) initPracticeList('all');
@@ -643,7 +650,7 @@
                 list.forEach(q => { if (userState.answered[q.id] !== undefined) done++; });
                 const pct = total > 0 ? Math.round((done / total) * 100) : 0;
                 return `
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm flex flex-col justify-between">
+                    <div class="topic-card bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-3">
                                 <span class="text-xs font-bold px-2.5 py-1 rounded-lg ${t.isCore ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300' : 'bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300'}">${t.code}</span>
