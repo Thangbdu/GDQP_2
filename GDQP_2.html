@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ôn Tập GDQP & AN - Hệ Thống Luyện Thi Toàn Diện 127 Câu</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); }
+        ::-webkit-scrollbar-thumb { background: rgba(16, 185, 129, 0.5); border-radius: 4px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.2s ease-out forwards; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('dashboard')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 flex items-center justify-center text-white shadow-md">
+                        <i class="fa-solid fa-shield-halved text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 class="font-extrabold text-lg sm:text-xl tracking-tight bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent">
+                                GDQP & AN Pro
+                            </h1>
+                            <span class="hidden sm:inline-block text-[11px] font-bold uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300 border border-amber-300/50">
+                                127 Câu Chuẩn
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Trắc nghiệm & Flashcard tự chứa không lỗi mạng</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center space-x-1 bg-slate-100 dark:bg-slate-700/60 p-1 rounded-xl">
+                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie"></i> Tổng quan
+                    </button>
+                    <button onclick="switchTab('practice')" id="nav-practice" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-pen-to-square"></i> Luyện Trắc Nghiệm
+                    </button>
+                    <button onclick="switchTab('exam')" id="nav-exam" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-stopwatch"></i> Thi Thử
+                    </button>
+                    <button onclick="switchTab('flashcard')" id="nav-flashcard" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group"></i> Flashcard
+                    </button>
+                    <button onclick="switchTab('search')" id="nav-search" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-magnifying-glass"></i> Tra Cứu Nhanh
+                    </button>
+                </nav>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-2">
+                    <button onclick="downloadHTMLFile()" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold shadow-sm transition flex items-center gap-1.5" title="Tải file HTML về máy">
+                        <i class="fa-solid fa-download"></i> <span class="hidden sm:inline">Tải File Web</span>
+                    </button>
+                    <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-200 transition" title="Đổi giao diện Sáng/Tối">
+                        <i id="theme-icon" class="fa-solid fa-moon text-base"></i>
+                    </button>
+                    <button onclick="openResetModal()" class="p-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/50 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-400 transition" title="Đặt lại tiến độ">
+                        <i class="fa-solid fa-rotate-right text-base"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Nav -->
+        <div class="md:hidden flex items-center justify-around border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 py-1.5 px-2">
+            <button onclick="switchTab('dashboard')" id="m-nav-dashboard" class="m-nav-btn flex flex-col items-center py-1 px-2 rounded-lg text-xs font-medium">
+                <i class="fa-solid fa-chart-pie text-sm mb-0.5"></i> Tổng quan
+            </button>
+            <button onclick="switchTab('practice')" id="m-nav-practice" class="m-nav-btn flex flex-col items-center py-1 px-2 rounded-lg text-xs font-medium">
+                <i class="fa-solid fa-pen-to-square text-sm mb-0.5"></i> Luyện tập
+            </button>
+            <button onclick="switchTab('exam')" id="m-nav-exam" class="m-nav-btn flex flex-col items-center py-1 px-2 rounded-lg text-xs font-medium">
+                <i class="fa-solid fa-stopwatch text-sm mb-0.5"></i> Thi thử
+            </button>
+            <button onclick="switchTab('flashcard')" id="m-nav-flashcard" class="m-nav-btn flex flex-col items-center py-1 px-2 rounded-lg text-xs font-medium">
+                <i class="fa-solid fa-layer-group text-sm mb-0.5"></i> Thẻ nhớ
+            </button>
+            <button onclick="switchTab('search')" id="m-nav-search" class="m-nav-btn flex flex-col items-center py-1 px-2 rounded-lg text-xs font-medium">
+                <i class="fa-solid fa-magnifying-glass text-sm mb-0.5"></i> Tra cứu
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- TAB 1: DASHBOARD -->
+        <section id="tab-dashboard" class="tab-content space-y-6 animate-fade-in">
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white p-6 sm:p-8 shadow-lg">
+                <div class="relative z-10 max-w-2xl space-y-3">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm text-xs font-semibold tracking-wide uppercase">
+                        <i class="fa-solid fa-shield text-amber-300"></i> Dữ liệu độc lập 100%
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold leading-tight">
+                        Ôn tập môn GDQP & AN toàn diện để đạt điểm A+!
+                    </h2>
+                    <p class="text-emerald-100 text-sm sm:text-base leading-relaxed">
+                        Hệ thống tổng hợp đầy đủ 127 câu hỏi từ 2 file tài liệu của bạn (71 câu trắc nghiệm gốc có giải thích + 56 câu hỏi mở rộng hóa thành trắc nghiệm & flashcard). Chạy mượt mà trực tiếp không cần mạng.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="startPracticeByTopic('all')" class="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold text-sm shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-play"></i> Luyện tập ngay (127 câu)
+                        </button>
+                        <button onclick="switchTab('exam')" class="px-5 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white font-semibold text-sm backdrop-blur-sm border border-white/20 transition flex items-center gap-2">
+                            <i class="fa-solid fa-bolt text-amber-300"></i> Thi thử tính điểm
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-check-double"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-medium text-slate-500">Đã làm</p>
+                        <p class="text-xl font-extrabold"><span id="stat-answered">0</span><span class="text-sm font-normal text-slate-400">/127</span></p>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/40 text-blue-600 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-medium text-slate-500">Chính xác</p>
+                        <p id="stat-accuracy" class="text-xl font-extrabold">0%</p>
+                    </div>
+                </div>
+                <div onclick="startSpecialPractice('wrong')" class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4 cursor-pointer hover:border-rose-400 transition">
+                    <div class="w-12 h-12 rounded-xl bg-rose-100 dark:bg-rose-900/40 text-rose-600 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-medium text-slate-500">Câu làm sai</p>
+                        <p id="stat-wrong" class="text-xl font-extrabold text-rose-600">0</p>
+                    </div>
+                </div>
+                <div onclick="startSpecialPractice('bookmarked')" class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4 cursor-pointer hover:border-amber-400 transition">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/40 text-amber-600 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-bookmark"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-medium text-slate-500">Đã đánh dấu</p>
+                        <p id="stat-bookmarked" class="text-xl font-extrabold text-amber-600">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topics Grid -->
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-book-open text-emerald-600"></i> Danh sách 6 Chủ đề ôn tập
+                </h3>
+                <div id="topics-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </div>
+        </section>
+
+        <!-- TAB 2: PRACTICE MODE -->
+        <section id="tab-practice" class="tab-content hidden space-y-6 animate-fade-in">
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div class="flex-grow">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Chọn chủ đề luyện tập:</label>
+                        <select id="practice-topic-select" onchange="changePracticeFilter()" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-3.5 py-2.5 text-sm font-semibold">
+                            <option value="all">📚 Tất cả 6 Chủ đề (127 câu)</option>
+                            <option value="core71">⭐ 3 Chủ đề Trắc nghiệm gốc (71 câu)</option>
+                            <option value="ext56">💡 3 Chủ đề Nghiên cứu mở rộng (56 câu)</option>
+                            <option value="t1">Chủ đề 1: Phòng chống "Diễn biến hòa bình" & BLLĐ (31 câu)</option>
+                            <option value="t2">Chủ đề 2: Dân tộc & Tôn giáo (22 câu)</option>
+                            <option value="t3">Chủ đề 3: Pháp luật Bảo vệ môi trường (18 câu)</option>
+                            <option value="t4">Chủ đề 4: Quyền con người & Tội phạm (20 câu)</option>
+                            <option value="t5">Chủ đề 5: An ninh quốc gia & Phi truyền thống (21 câu)</option>
+                            <option value="t6">Chủ đề 6: Thông tin & Không gian mạng (15 câu)</option>
+                            <option value="wrong">❌ Các câu làm sai cần ôn lại</option>
+                            <option value="bookmarked">🔖 Các câu đã đánh dấu</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2 shrink-0">
+                        <button onclick="togglePracticeViewMode()" id="btn-view-mode" class="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-600 text-xs sm:text-sm font-medium flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+                            <i class="fa-solid fa-list-check"></i> <span id="view-mode-label">Xem danh sách</span>
+                        </button>
+                        <button onclick="toggleShuffleQuestions()" id="btn-shuffle-q" class="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-600 text-xs sm:text-sm font-medium flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+                            <i class="fa-solid fa-shuffle"></i> <span>Đảo câu</span>
+                        </button>
+                        <button onclick="toggleShuffleOptions()" id="btn-shuffle-opt" class="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-600 text-xs sm:text-sm font-medium flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+                            <i class="fa-solid fa-random"></i> <span>Đảo A,B,C,D</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <div class="lg:col-span-8 space-y-4">
+                    <div id="practice-question-container" class="space-y-4"></div>
+                    <div id="practice-single-nav" class="flex items-center justify-between bg-white dark:bg-slate-800 px-5 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <button onclick="prevPracticeQuestion()" id="btn-prev-q" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 font-semibold text-sm flex items-center gap-2 disabled:opacity-40 transition">
+                            <i class="fa-solid fa-arrow-left"></i> Câu trước
+                        </button>
+                        <span class="text-xs text-slate-400 hidden sm:inline">Phím tắt: 1, 2, 3, 4 hoặc Mũi tên trái/phải</span>
+                        <button onclick="nextPracticeQuestion()" id="btn-next-q" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm flex items-center gap-2 disabled:opacity-40 transition">
+                            Câu tiếp <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="lg:col-span-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 sticky top-20">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-bold text-sm uppercase tracking-wider text-slate-500">Danh sách câu hỏi</h4>
+                        <span id="palette-counter" class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">0/0</span>
+                    </div>
+                    <div id="practice-palette" class="grid grid-cols-6 sm:grid-cols-8 lg:grid-cols-6 gap-2 max-h-80 overflow-y-auto pr-1"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: EXAM MODE -->
+        <section id="tab-exam" class="tab-content hidden space-y-6 animate-fade-in">
+            <div id="exam-setup" class="max-w-2xl mx-auto bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-sm space-y-6">
+                <div class="text-center space-y-2">
+                    <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-3xl mx-auto mb-3">
+                        <i class="fa-solid fa-stopwatch"></i>
+                    </div>
+                    <h2 class="text-2xl font-extrabold">Cấu Hình Bài Thi Thử GDQP & AN</h2>
+                    <p class="text-sm text-slate-500">Hệ thống bốc ngẫu nhiên câu hỏi, bấm giờ tự động và chấm điểm thang 10.</p>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1.5">Nguồn câu hỏi thi:</label>
+                        <select id="exam-source" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-4 py-3 text-sm font-semibold">
+                            <option value="core71">⭐ Đề chuẩn 3 Chủ đề Trắc nghiệm gốc (71 câu)</option>
+                            <option value="all">📚 Toàn diện cả 6 Chủ đề (127 câu)</option>
+                            <option value="t1">Chủ đề 1: Phòng chống "Diễn biến hòa bình" (31 câu)</option>
+                            <option value="t2">Chủ đề 2: Dân tộc và Tôn giáo (22 câu)</option>
+                            <option value="t3">Chủ đề 3: Bảo vệ môi trường (18 câu)</option>
+                            <option value="ext56">💡 3 Chủ đề mở rộng (56 câu)</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-1.5">Số lượng câu hỏi:</label>
+                            <select id="exam-count" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-4 py-3 text-sm font-semibold">
+                                <option value="20">20 câu</option>
+                                <option value="30">30 câu</option>
+                                <option value="40" selected>40 câu (Chuẩn)</option>
+                                <option value="50">50 câu</option>
+                                <option value="71">71 câu</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-1.5">Thời gian:</label>
+                            <select id="exam-time" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-4 py-3 text-sm font-semibold">
+                                <option value="15">15 phút</option>
+                                <option value="30" selected>30 phút</option>
+                                <option value="45">45 phút</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="startExamFromSetup()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-base shadow transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-play"></i> Bắt Đầu Thi Thử
+                </button>
+            </div>
+
+            <div id="exam-runner" class="hidden space-y-6">
+                <div class="sticky top-16 z-30 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-md flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="px-3.5 py-2 rounded-xl bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300 font-extrabold text-lg flex items-center gap-2">
+                            <i class="fa-regular fa-clock"></i> <span id="exam-timer-display">30:00</span>
+                        </div>
+                        <p id="exam-answered-count" class="text-sm font-bold text-slate-600 dark:text-slate-300">0 / 40 câu</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="cancelExam()" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-xs sm:text-sm font-semibold">Thoát</button>
+                        <button onclick="submitExam()" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow flex items-center gap-2">Nộp bài</button>
+                    </div>
+                </div>
+                <div id="exam-result-banner" class="hidden bg-white dark:bg-slate-800 rounded-2xl border-2 border-emerald-500 p-6 shadow-md"></div>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <div id="exam-questions-list" class="lg:col-span-8 space-y-4"></div>
+                    <div class="lg:col-span-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 sticky top-36">
+                        <h4 class="font-bold text-sm uppercase tracking-wider text-slate-500 mb-3">Bảng câu hỏi thi</h4>
+                        <div id="exam-palette" class="grid grid-cols-6 sm:grid-cols-8 lg:grid-cols-6 gap-2 max-h-80 overflow-y-auto pr-1"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: FLASHCARD MODE -->
+        <section id="tab-flashcard" class="tab-content hidden space-y-6 animate-fade-in">
+            <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex-grow">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Chọn chủ đề Flashcard:</label>
+                    <select id="fc-topic-select" onchange="changeFlashcardTopic()" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-3.5 py-2.5 text-sm font-semibold">
+                        <option value="all">🌟 Tất cả 6 Chủ đề (127 thẻ)</option>
+                        <option value="unmastered">🔥 Thẻ cần ôn lại</option>
+                        <option value="mastered">✅ Thẻ đã thuộc</option>
+                        <option value="t1">Chủ đề 1: Phòng chống "Diễn biến hòa bình" (31 thẻ)</option>
+                        <option value="t2">Chủ đề 2: Dân tộc và Tôn giáo (22 thẻ)</option>
+                        <option value="t3">Chủ đề 3: Bảo vệ môi trường (18 thẻ)</option>
+                        <option value="t4">Chủ đề 4: Quyền con người & Tội phạm (20 thẻ)</option>
+                        <option value="t5">Chủ đề 5: An ninh quốc gia (21 thẻ)</option>
+                        <option value="t6">Chủ đề 6: Không gian mạng (15 thẻ)</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <span id="fc-mastered-stat" class="text-xs font-bold px-3 py-2 rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">Đã thuộc: 0/127</span>
+                    <button onclick="shuffleFlashcards()" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 font-semibold text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-shuffle"></i> Trộn thẻ
+                    </button>
+                </div>
+            </div>
+
+            <div class="max-w-3xl mx-auto space-y-5">
+                <div class="flex items-center justify-between text-sm font-semibold text-slate-400 px-1">
+                    <span id="fc-topic-badge" class="text-emerald-600 font-bold">Chủ đề 1</span>
+                    <span id="fc-counter">Thẻ 1 / 127</span>
+                </div>
+                <div onclick="flipFlashcard()" class="perspective-1000 cursor-pointer select-none h-80 sm:h-96 w-full">
+                    <div id="fc-inner" class="relative w-full h-full transform-style-3d">
+                        <div class="absolute inset-0 backface-hidden bg-white dark:bg-slate-800 rounded-3xl border-2 border-slate-200 dark:border-slate-700 shadow-lg p-6 sm:p-10 flex flex-col justify-between">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-400"><i class="fa-solid fa-circle-question text-emerald-500 mr-1"></i> Câu hỏi Flashcard (Bấm để lật)</span>
+                            <div class="my-auto text-center"><h3 id="fc-front-text" class="text-lg sm:text-2xl font-bold leading-relaxed"></h3></div>
+                            <div class="text-center text-xs text-emerald-600 font-medium">Bấm vào thẻ để xem đáp án</div>
+                        </div>
+                        <div class="absolute inset-0 backface-hidden rotate-y-180 bg-gradient-to-br from-emerald-700 to-teal-800 text-white rounded-3xl shadow-lg p-6 sm:p-10 flex flex-col justify-between overflow-y-auto">
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-200"><i class="fa-solid fa-check-circle mr-1"></i> Đáp án & Giải thích chi tiết</span>
+                            <div class="my-auto space-y-3 text-center">
+                                <div id="fc-back-short" class="inline-block px-3.5 py-1.5 rounded-xl bg-amber-400 text-slate-900 font-extrabold text-sm sm:text-base shadow"></div>
+                                <p id="fc-back-detail" class="text-base sm:text-lg font-medium text-emerald-50 leading-relaxed"></p>
+                            </div>
+                            <div class="text-center text-xs text-emerald-200">Đã đồng bộ từ file tài liệu GDQP&AN</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center justify-center gap-3">
+                    <button onclick="prevFlashcard()" class="px-4 py-2.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-bold text-sm shadow flex items-center gap-2">
+                        <i class="fa-solid fa-chevron-left"></i> Thẻ trước
+                    </button>
+                    <button onclick="markFlashcardStatus(false)" class="px-4 py-2.5 rounded-2xl bg-amber-100 text-amber-800 font-bold text-sm flex items-center gap-1.5">
+                        <i class="fa-solid fa-rotate-left"></i> Cần ôn lại
+                    </button>
+                    <button onclick="flipFlashcard()" class="px-5 py-2.5 rounded-2xl bg-slate-800 text-white font-bold text-sm shadow flex items-center gap-2">
+                        <i class="fa-solid fa-retweet"></i> Lật thẻ
+                    </button>
+                    <button onclick="markFlashcardStatus(true)" class="px-4 py-2.5 rounded-2xl bg-emerald-600 text-white font-bold text-sm shadow flex items-center gap-1.5">
+                        <i class="fa-solid fa-check"></i> Đã thuộc
+                    </button>
+                    <button onclick="nextFlashcard()" class="px-4 py-2.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-bold text-sm shadow flex items-center gap-2">
+                        Thẻ tiếp <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: QUICK SEARCH -->
+        <section id="tab-search" class="tab-content hidden space-y-6 animate-fade-in">
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="relative flex-grow">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="search-input" oninput="renderSearchList()" placeholder="Gõ từ khóa tìm kiếm nhanh (VD: gây rối, Nghị quyết 04, tôn giáo, môi trường...)" class="w-full pl-11 pr-10 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <select id="search-topic-filter" onchange="renderSearchList()" class="bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-4 py-3 text-sm font-semibold">
+                        <option value="all">Tất cả 6 Chủ đề</option>
+                        <option value="t1">Chủ đề 1 (31)</option>
+                        <option value="t2">Chủ đề 2 (22)</option>
+                        <option value="t3">Chủ đề 3 (18)</option>
+                        <option value="t4">Chủ đề 4 (20)</option>
+                        <option value="t5">Chủ đề 5 (21)</option>
+                        <option value="t6">Chủ đề 6 (15)</option>
+                    </select>
+                </div>
+                <p id="search-count-label" class="text-xs text-slate-500">Hiển thị 127 câu hỏi</p>
+            </div>
+            <div id="search-results-container" class="space-y-3"></div>
+        </section>
+    </main>
+
+    <!-- MODAL RESET -->
+    <div id="reset-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-700 shadow-xl space-y-4">
+            <h3 class="text-lg font-bold text-rose-600">Xóa toàn bộ tiến độ học tập?</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-300">Tất cả lịch sử làm bài và thẻ đã nhớ sẽ được đặt lại về ban đầu.</p>
+            <div class="flex justify-end gap-3 pt-2">
+                <button onclick="closeResetModal()" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-sm font-semibold">Hủy</button>
+                <button onclick="confirmReset()" class="px-4 py-2 rounded-xl bg-rose-600 text-white text-sm font-bold">Xác nhận xóa</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT DATA & LOGIC -->
+    <script>
+        const TOPICS = [
+            { id: 't1', code: 'Chủ đề 1', title: 'Phòng chống chiến lược “Diễn biến hoà bình” & BLLĐ', icon: 'fa-shield-virus', isCore: true, desc: '31 câu trắc nghiệm gốc và giải đáp chi tiết' },
+            { id: 't2', code: 'Chủ đề 2', title: 'Phòng, chống nhân tố mất ổn định về Dân tộc & Tôn giáo', icon: 'fa-hands-holding-circle', isCore: true, desc: '22 câu trắc nghiệm gốc và giải đáp chi tiết' },
+            { id: 't3', code: 'Chủ đề 3', title: 'Pháp luật về bảo vệ môi trường', icon: 'fa-leaf', isCore: true, desc: '18 câu trắc nghiệm gốc và giải đáp chi tiết' },
+            { id: 't4', code: 'Chủ đề 4', title: 'Bảo vệ quyền con người và phòng chống tội phạm', icon: 'fa-scale-balanced', isCore: false, desc: '20 câu hỏi nghiên cứu & trắc nghiệm mở rộng' },
+            { id: 't5', code: 'Chủ đề 5', title: 'An ninh quốc gia và an ninh phi truyền thống', icon: 'fa-earth-asia', isCore: false, desc: '21 câu hỏi nghiên cứu & trắc nghiệm mở rộng' },
+            { id: 't6', code: 'Chủ đề 6', title: 'Thông tin và bảo vệ không gian mạng', icon: 'fa-user-shield', isCore: false, desc: '15 câu hỏi nghiên cứu & trắc nghiệm mở rộng' }
+        ];
+
+        // 127 câu hỏi từ file tài liệu
+        const QUESTIONS_DB = [
+            // CHỦ ĐỀ 1
+            { id: 't1_q1', topic: 't1', num: 1, q: 'Bạo loạn lật đổ gồm có những hình thức nào:', options: ['Bạo loạn chính trị kết hợp với đấu tranh vũ trang và gây rối.', 'Bạo loạn vũ trang kết hợp với bạo loạn chính trị và gây rối.', 'Bạo loạn chính trị, bạo loạn vũ trang, kết hợp bạo loạn chính trị với vũ trang.', 'Bạo loạn chính trị kết hợp với gây rối và vũ trang.'], ans: 2, detail: 'Bạo loạn lật đổ gồm các hình thức: Bạo loạn chính trị, bạo loạn vũ trang, hoặc bạo loạn chính trị kết hợp với vũ trang.' },
+            { id: 't1_q2', topic: 't1', num: 2, q: 'Quan hệ giữa “Diễn biến hoà bình” và bạo loạn lật đổ như thế nào?', options: ['Diễn biến hoà bình tạo thời cơ cho bạo loạn lật đổ.', 'Diễn biến hoà bình là nguyên nhân của bạo loạn lật đổ.', 'Diễn biến hoà bình là quá trình tạo nên những điều kiện, thời cơ cho bạo loạn lật đổ.', 'Diễn biến hoà bình là quá trình tạo những điều kiện, thời cơ để kẻ thù tiến hành xâm lược.'], ans: 2, detail: '“Diễn biến hòa bình” là quá trình tạo nên những điều kiện, thời cơ cho bạo loạn lật đổ; bạo loạn lật đổ là kết quả tất yếu, bước ngoặt quyết định.' },
+            { id: 't1_q3', topic: 't1', num: 3, q: 'Đặc điểm gây rối là gì?', options: ['Diễn ra tự phát do bị các lực lượng quá khích kích động.', 'Diễn ra bất ngờ, không gian hẹp, thời gian ngắn.', 'Diễn ra tự phát do các thế lực thù địch kích động.', 'Diễn ra tự phát do các phần tử chống đối trong xã hội.'], ans: 1, detail: 'Đặc điểm gây rối: Diễn ra bất ngờ, không gian hẹp, thời gian ngắn.' },
+            { id: 't1_q4', topic: 't1', num: 4, q: 'Địch thường lợi dụng gây rối để làm gì?', options: ['Địch lợi dụng để tập duyệt âm mưu phá hoại, lật đổ chính quyền.', 'Địch lợi dụng để gây bạo loạn, gây chiến tranh.', 'Địch lợi dụng để tập duyệt hoặc mở màn cho bạo loạn lật đổ.', 'Địch lợi dụng để phá hoại, gây rối, mất trật tự an ninh.'], ans: 2, detail: 'Địch thường lợi dụng gây rối để tập dượt hoặc mở màn cho bạo loạn lật đổ.' },
+            { id: 't1_q5', topic: 't1', num: 5, q: 'Mục tiêu của các thế lực thù địch thực hiện “Diễn biến hoà bình” chống phá cách mạng Việt Nam:', options: ['Xoá bỏ chế độ XHCN, chuyển hoá nước ta theo con đường tư bản chủ nghĩa.', 'Xoá bỏ sự lãnh đạo của Đảng và buộc ta lệ thuộc vào chúng.', 'Xoá bỏ vai trò lãnh đạo của Đảng, xoá bỏ chế độ XHCN.', 'Xoá bỏ nhà nước XHCN và buộc ta chấp nhận các điều kiện của chúng.'], ans: 2, detail: 'Xóa bỏ vai trò lãnh đạo của Đảng, xóa bỏ chế độ XHCN.' },
+            { id: 't1_q6', topic: 't1', num: 6, q: 'Mục đích thủ đoạn chống phá về kinh tế của các thế lực thù địch đối với nước ta là gì?', options: ['Chuyển hoá nền kinh tế Việt Nam, gây sức ép chính trị, cấm viện trợ, chuyển giao công nghệ.', 'Ngăn cản sự giúp đỡ, viện trợ, chuyển giao công nghệ của các nước để gây sức ép chính trị.', 'Khuyến khích kinh tế nhà nước phát triển trở thành thành phần kinh tế chủ đạo.', 'Chuyển hoá nền kinh tế Việt Nam theo quỹ đạo kinh tế thị trường tư bản chủ nghĩa.'], ans: 3, detail: 'Chuyển hoá nền kinh tế Việt Nam theo quỹ đạo kinh tế thị trường tư bản chủ nghĩa.' },
+            { id: 't1_q7', topic: 't1', num: 7, q: 'Một trong những nội dung chống phá về kinh tế của chiến lược “Diễn biến hoà bình”:', options: ['Khích lệ thành phần kinh tế tư nhân phát triển, từng bước làm mất vai trò chủ đạo của thành phần kinh tế Nhà nước.', 'Khích lệ kinh tế 100% vốn nước ngoài phát triển, làm mất vai trò chủ đạo của thành phần kinh tế Nhà nước.', 'Khích lệ kinh tế cá thể, tiểu chủ phát triển, làm mất vai trò chủ đạo của thành phần kinh tế Nhà nước.', 'Khích lệ kinh tế tư bản Nhà nước phát triển, làm mất vai trò chủ đạo của thành phần kinh tế Nhà nước.'], ans: 0, detail: 'Khích lệ thành phần kinh tế tư nhân phát triển, từng bước làm mất vai trò chủ đạo của thành phần kinh tế Nhà nước.' },
+            { id: 't1_q8', topic: 't1', num: 8, q: 'Kẻ thù thực hiện thủ đoạn diễn biến hoà bình phá hoại kinh tế của ta nhằm:', options: ['Đặt ra các điều kiện để buộc ta phải theo quỹ đạo của chúng.', 'Đặt ra các điều kiện và tạo cơ để tiến công quân sự.', 'Đặt ra các điều kiện và gây sức ép về chính trị.', 'Đặt ra các điều kiện để lật đổ hệ thống chính trị.'], ans: 2, detail: 'Đặt ra các điều kiện và gây sức ép về chính trị.' },
+            { id: 't1_q9', topic: 't1', num: 9, q: 'Một trong những nội dung kẻ thù thực hiện chống phá ta về chính trị:', options: ['Phá vỡ khối đại đoàn kết toàn dân của các tổ chức chính trị.', 'Chia rẽ nội bộ, kích động gây rối loạn các tổ chức trong xã hội.', 'Cô lập Đảng Cộng sản Việt Nam, Nhà nước XHCN với quân đội và nhân dân.', 'Kích động đòi thực hiện chế độ “đa nguyên chính trị, đa đảng đối lập”.'], ans: 3, detail: 'Kích động đòi thực hiện chế độ “đa nguyên chính trị, đa đảng đối lập”.' },
+            { id: 't1_q10', topic: 't1', num: 10, q: 'Một trong những nội dung chống phá về chính trị trong chiến lược “Diễn biến hoà bình”:', options: ['Đối lập Chủ nghĩa Mác - Lênin và tư tưởng Hồ Chí Minh.', 'Phủ định Chủ nghĩa Mác – Lênin, tư tưởng Hồ Chí Minh và đường lối của Đảng.', 'Đối lập nhiệm vụ kinh tế - xã hội và quốc phòng – an ninh.', 'Chia rẽ mối quan hệ giữa Đảng với nhân dân và khối đại đoàn kết toàn dân tộc.'], ans: 1, detail: 'Phủ định Chủ nghĩa Mác – Lênin, tư tưởng Hồ Chí Minh và đường lối của Đảng.' },
+            { id: 't1_q11', topic: 't1', num: 11, q: 'Một trong những nội dung chống phá về chính trị trong chiến lược “Diễn biến hoà bình”:', options: ['Phá vỡ hệ thống nguyên tắc tổ chức trong bộ máy Nhà nước ta.', 'Phá vỡ sự thống nhất của các tổ chức, nhất là tổ chức chính trị.', 'Phá vỡ sự thống nhất của khối đại đoàn kết toàn dân tộc dưới sự lãnh đạo của Đảng.', 'Phá vỡ nguyên tắc tổ chức của Đảng, nhất là nguyên tắc tập trung dân chủ.'], ans: 3, detail: 'Phá vỡ nguyên tắc tổ chức của Đảng, nhất là nguyên tắc tập trung dân chủ.' },
+            { id: 't1_q12', topic: 't1', num: 12, q: 'Chống phá ta về tư tưởng-văn hoá trong chiến lược “DBHB” bạo loạn lật đổ nhằm:', options: ['Xoá bỏ chủ nghĩa Mác – Lê nin và tư tưởng Hồ Chí Minh.', 'Phá hoại sự đoàn kết của toàn đảng, toàn quân, toàn dân.', 'Phá hoại nguyên tắc tập trung dân chủ của Đảng và Nhà nước ta.', 'Phá hoại, xuyên tạc đường lối đổi mới của Đảng và Nhà nước ta.'], ans: 0, detail: 'Xoá bỏ chủ nghĩa Mác – Lênin và tư tưởng Hồ Chí Minh.' },
+            { id: 't1_q13', topic: 't1', num: 13, q: 'Thực hiện thủ đoạn “Diễn biến hoà bình” về văn hoá, kẻ thù tập trung tấn công:', options: ['Vào truyền thống yêu nước và giá trị của văn hoá Việt Nam.', 'Vào những sản phẩm văn hoá quý báu của dân tộc Việt Nam.', 'Vào bản sắc văn hoá và giá trị văn hoá của dân tộc Việt Nam.', 'Vào nền văn hoá mang bản sắc dân tộc Việt Nam.'], ans: 2, detail: 'Vào bản sắc văn hoá và giá trị văn hoá của dân tộc Việt Nam.' },
+            { id: 't1_q14', topic: 't1', num: 14, q: 'Các thế lực thù địch "Lợi dụng vấn đề tôn giáo - dân tộc" để chống phá ta như thế nào?', options: ['Lợi dụng chính sách bình đẳng, tự do dân chủ của ta.', 'Lợi dụng chính sách tự do tôn giáo của Đảng, Nhà nước ta để truyền đạo trái phép.', 'Lợi dụng những sai sót, sơ hở của Đảng và nhà nước ta để vu cáo.', 'Triệt để lợi dụng, dân chủ, tự do của ta để tuyên truyền xuyên tạc.'], ans: 2, detail: 'Lợi dụng những sai sót, sơ hở của Đảng và nhà nước ta để vu cáo.' },
+            { id: 't1_q15', topic: 't1', num: 15, q: 'Thủ đoạn “Diễn biến hoà bình”, kẻ thù triệt để lợi dụng chính sách tự do tôn giáo của Đảng ta để:', options: ['Truyền bá mê tín dị đoan và tư tưởng phản động chống chủ nghĩa xã hội.', 'Truyền đạo trái phép nhằm thực hiện âm mưu tôn giáo hoá dân tộc.', 'Truyền bá mê tín dị đoan, tập hợp lực lượng để chống phá cách mạng.', 'Truyền bá mê tín và tổ chức lực lượng khủng bố.'], ans: 1, detail: 'Truyền đạo trái phép nhằm thực hiện âm mưu tôn giáo hoá dân tộc.' },
+            { id: 't1_q16', topic: 't1', num: 16, q: 'Một trong những nội dung kẻ thù lợi dụng để chống phá cách mạng Việt Nam về vấn đề dân tộc là:', options: ['Lợi dụng các mâu thuẫn của đồng bào dân tộc để kích động.', 'Lợi dụng các hủ tục lạc hậu của đồng bào dân tộc để kích động.', 'Lợi dụng tư tưởng đòi li khai, tự quyết dân tộc để kích động.', 'Lợi dụng các mâu thuẫn giữa các dân tộc do nhiều nguyên nhân gây ra.'], ans: 2, detail: 'Lợi dụng tư tưởng đòi li khai, tự quyết dân tộc để kích động.' },
+            { id: 't1_q17', topic: 't1', num: 17, q: 'Một trong những thủ đoạn chống phá trên lĩnh vực quốc phòng, an ninh:', options: ['Đòi tách quân đội, công an với các tổ chức chính trị xã hội khác.', 'Đòi phi chính trị hóa đối với lực lượng quân đội nhân dân Việt Nam.', 'Đòi phủ nhận vai trò lãnh đạo của Đảng trong lĩnh vực quốc phòng, an ninh.', 'Đòi quân đội và công an là lực lượng trung lập, tách rời sự lãnh đạo của đảng.'], ans: 1, detail: 'Đòi phi chính trị hóa đối với lực lượng quân đội nhân dân Việt Nam.' },
+            { id: 't1_q18', topic: 't1', num: 18, q: 'Một trong những thủ đoạn chống phá trên lĩnh vực đối ngoại trong chiến lược “Diễn biến hoà bình”:', options: ['Chia rẽ Việt Nam với các nước xã hội chủ nghĩa và các nước tiến bộ.', 'Chia rẽ Việt Nam với Lào và các nước xã hội chủ nghĩa.', 'Chia rẽ Việt Nam với Campuchia và các nước tiến bộ.', 'Chia rẽ Việt Nam với Lào, Campuchia và các nước xã hội chủ nghĩa.'], ans: 3, detail: 'Chia rẽ Việt Nam với Lào, Campuchia và các nước xã hội chủ nghĩa.' },
+            { id: 't1_q19', topic: 't1', num: 19, q: 'Trong các thủ đoạn sau, thủ đoạn nào không phải của chiến lược diễn biến hòa bình?', options: ['Xâm nhập về văn hóa', 'Phát động chiến tranh hạt nhân', 'Chống phá về chính trị tư tưởng', 'Vô hiệu hóa lực lượng vũ trang'], ans: 1, detail: 'Phát động chiến tranh hạt nhân không thuộc thủ đoạn diễn biến hòa bình.' },
+            { id: 't1_q20', topic: 't1', num: 20, q: 'Trong quá trình bạo loạn, bọn phản động tìm mọi cách để:', options: ['Mở rộng quy mô, lực lượng, kêu gọi nước ngoài can thiệp.', 'Mở rộng phạm vi, quy mô, lực lượng, kêu gọi tài trợ của nước ngoài.', 'Mở rộng phạm vi, quy mô, lực lượng, đập phá trụ sở, uy hiếp chính quyền địa phương.', 'Mở rộng phạm vi, quy mô, lực lượng, đập phá trụ sở, lật đổ chính quyền địa phương.'], ans: 0, detail: 'Mở rộng quy mô, lực lượng, kêu gọi nước ngoài can thiệp.' },
+            { id: 't1_q21', topic: 't1', num: 21, q: 'Nguyên tắc xử lí khi có bạo loạn diễn ra là:', options: ['Nhanh gọn, kiên quyết, linh hoạt, đúng đối tượng, không để lan rộng, kéo dài.', 'Nhanh gọn, kiên quyết, triệt để đúng đối tượng, không để lan rộng, kéo dài.', 'Nhanh gọn, linh hoạt, khôn khéo đúng đối tượng, không để lan rộng, kéo dài.', 'Nhanh gọn, kiên quyết, linh hoạt, mềm dẻo đúng đối tượng, không để lan rộng, kéo dài.'], ans: 0, detail: 'Nhanh gọn, kiên quyết, linh hoạt, đúng đối tượng, không để lan rộng, kéo dài.' },
+            { id: 't1_q22', topic: 't1', num: 22, q: 'Một trong những mục tiêu phòng chống chiến lược “Diễn biến hoà bình”:', options: ['Bảo vệ vững chắc nhà nước XHCN.', 'Giữ vững ổn định chính trị - xã hội của đất nước.', 'Bảo vệ vững chắc độc lập, chủ quyền của quốc gia, dân tộc.', 'Bảo vệ vững chắc toàn vẹn lãnh thổ của Tổ quốc.'], ans: 1, detail: 'Giữ vững ổn định chính trị - xã hội của đất nước.' },
+            { id: 't1_q23', topic: 't1', num: 23, q: 'Để góp phần làm thất bại chiến lược “Diễn biến hoà bình”, bạo loạn lật đổ cần nắm vững một trong những mục tiêu?', options: ['Bảo vệ sự nghiệp công nghiệp hoá, hiện đại hóa đất nước.', 'Bảo vệ tính mạng và tài sản của nhân dân.', 'Bảo vệ sự nghiệp đổi mới và lợi ích quốc gia, dân tộc.', 'Bảo vệ An ninh Chính trị của đất nước.'], ans: 2, detail: 'Bảo vệ sự nghiệp đổi mới và lợi ích quốc gia, dân tộc.' },
+            { id: 't1_q24', topic: 't1', num: 24, q: 'Nhiệm vụ phòng chống chiến lược “Diễn biến hoà bình”, bạo loạn lật đổ được xác định là:', options: ['Nhiệm vụ cấp bách hàng đầu và là nhiệm vụ thường xuyên, lâu dài.', 'Nhiệm vụ chủ yếu trước mắt trong các nhiệm vụ QP-AN ở nước ta hiện nay.', 'Nhiệm vụ cơ bản lâu dài trong các nhiệm vụ QP-AN ở nước ta hiện nay.', 'Nhiệm vụ trọng tâm hàng đầu và là nhiệm vụ thường xuyên, lâu dài.'], ans: 0, detail: 'Nhiệm vụ cấp bách hàng đầu và là nhiệm vụ thường xuyên, lâu dài.' },
+            { id: 't1_q25', topic: 't1', num: 25, q: 'Một trong những quan điểm trong đấu tranh phòng chống chiến lược “Diễn biến hoà bình”:', options: ['Là một cuộc đấu tranh dân tộc rất gay go, quyết liệt trên mọi lĩnh vực.', 'Là một cuộc đấu tranh giai cấp gay go, quyết liệt, lâu dài và phức tạp trên mọi lĩnh vực.', 'Là cuộc đấu tranh giai cấp; dân tộc gay go, quyết liệt, lâu dài và phức tạp trên mọi lĩnh vực.', 'Là một cuộc đấu tranh giải quyết vấn đề ai thắng ai giữa chủ nghĩa tư bản và chủ nghĩa xã hội.'], ans: 2, detail: 'Là cuộc đấu tranh giai cấp; dân tộc gay go, quyết liệt, lâu dài và phức tạp trên mọi lĩnh vực.' },
+            { id: 't1_q26', topic: 't1', num: 26, q: 'Phòng chống chiến lược “DBHB”, bạo loạn lật đổ cần phát huy sức mạnh tổng hợp của:', options: ['Toàn dân dưới sự lãnh đạo của Đảng Cộng sản Việt Nam.', 'Toàn dân, toàn quân dưới sự lãnh đạo của Đảng Cộng sản Việt Nam.', 'Toàn dân, lực lượng vũ trang dưới sự lãnh đạo của Đảng Cộng sản Việt Nam.', 'Toàn dân, của cả hệ thống chính trị dưới sự lãnh đạo của Đảng Cộng sản Việt Nam.'], ans: 3, detail: 'Toàn dân, của cả hệ thống chính trị dưới sự lãnh đạo của Đảng Cộng sản Việt Nam.' },
+            { id: 't1_q27', topic: 't1', num: 27, q: 'Nghị quyết 04 của BCHTW khóa XII chỉ ra bao nhiêu biểu hiện “tự diễn biến”, “tự chuyển hóa”?', options: ['25 biểu hiện', '27 biểu hiện', '29 biểu hiện', '30 biểu hiện'], ans: 1, detail: 'Nghị quyết 04 khóa XII chỉ ra 27 biểu hiện (gồm 9 suy thoái tư tưởng, 9 suy thoái đạo đức và 9 tự diễn biến, tự chuyển hóa).' },
+            { id: 't1_q28', topic: 't1', num: 28, q: 'Một trong những giải pháp phòng chống chiến lược “Diễn biến hoà bình”, bạo loạn lật đổ:', options: ['Nâng cao nhận thức về âm mưu phá hoại của kẻ thù.', 'Xây dựng ý thức bảo vệ Tổ quốc cho toàn dân.', 'Xây dựng các tổ chức chính trị vững mạnh.', 'Xây dựng các lực lượng vũ trang đặc biệt là công an vững mạnh.'], ans: 0, detail: 'Nâng cao nhận thức về âm mưu phá hoại của kẻ thù.' },
+            { id: 't1_q29', topic: 't1', num: 29, q: 'Một trong những giải pháp phòng chống chiến lược diễn biến hoà bình, bạo loạn lật đổ:', options: ['Đẩy mạnh công nghiệp hoá hiện đại hoá, chống nguy cơ tụt hậu kinh tế.', 'Xây dựng cơ sở chính trị - xã hội vững mạnh về mọi mặt.', 'Đẩy lùi các hủ tục lạc hậu, mê tín dị đoan và các tệ nạn xã hội.', 'Xây dựng lòng yêu nước cho tuổi trẻ nhất là học sinh, sinh viên.'], ans: 1, detail: 'Xây dựng cơ sở chính trị - xã hội vững mạnh về mọi mặt.' },
+            { id: 't1_q30', topic: 't1', num: 30, q: 'Một trong những giải pháp phòng chống chiến lược “Diễn biến hoà bình”, bạo loạn lật đổ:', options: ['Tăng cường quan hệ đối ngoại với các nước, các chế độ chính trị trên thế giới.', 'Xây dựng, luyện tập các phương án, các tình huống chống “Diễn biến hòa bình”, BLLĐ.', 'Tăng cường quan hệ với các nước xã hội chủ nghĩa và các đảng cộng sản trên thế giới.', 'Xây dựng lực lượng chuyên trách để phòng chống “Diễn biến hòa bình”, bạo loạn lật đổ.'], ans: 1, detail: 'Xây dựng, luyện tập các phương án, các tình huống chống “Diễn biến hòa bình”, BLLĐ.' },
+            { id: 't1_q31', topic: 't1', num: 31, q: 'Sinh viên cần làm gì để góp phần làm thất bại chiến lược "DBHB", BLLĐ của kẻ thù:', options: ['Luôn học tập phấn đấu, nâng cao cảnh giác tự bảo vệ mình, bảo vệ nơi mình cư trú.', 'Luôn nâng cao cảnh giác tích cực tham gia các hoạt động phong trào ở nhà trường và địa phương.', 'Tích cực học tập, rèn luyện, nâng cao tinh thần cảnh giác cách mạng, phát hiện, đấu tranh, ngăn ngừa.', 'Tích cực học tập, rèn luyện tham gia xây dựng thế trận quốc phòng, an ninh nhân dân trong mọi tình huống.'], ans: 2, detail: 'Tích cực học tập, rèn luyện, nâng cao tinh thần cảnh giác cách mạng, phát hiện, đấu tranh, ngăn ngừa.' },
+
+            // CHỦ ĐỀ 2
+            { id: 't2_q1', topic: 't2', num: 1, q: 'Xu thế lớn trong mối quan hệ giữa các dân tộc trên thế giới trong giai đoạn hiện nay là gì?', options: ['Toàn cầu hóa diễn biến phức tạp.', 'Hòa bình hợp tác và phát triển.', 'Xung đột dân tộc, sắc tộc, tôn giáo, chạy đua vũ trang.', 'Độc lập, tự chủ, tự lực, tự cường, chống can thiệp.'], ans: 1, detail: 'Hòa bình hợp tác và phát triển.' },
+            { id: 't2_q2', topic: 't2', num: 2, q: 'Quan hệ dân tộc, sắc tộc hiện nay trên thế giới vẫn diễn ra phức tạp ở phạm vi:', options: ['Châu Phi và châu Mỹ Latinh.', 'Châu Á và châu Âu.', 'Các nước xã hội chủ nghĩa.', 'Quốc gia, khu vực và quốc tế.'], ans: 3, detail: 'Quốc gia, khu vực và quốc tế.' },
+            { id: 't2_q3', topic: 't2', num: 3, q: 'Vấn đề dân tộc, sắc tộc đã gây nên những hậu quả nặng nề về lĩnh vực nào?', options: ['Văn hoá, xã hội, đe doạ hoà bình thế giới.', 'Văn hóa, quân sự, chính trị, an ninh toàn bộ khu vực và quốc tế.', 'Kinh tế, chính trị, văn hoá, xã hội, môi trường cho các quốc gia.', 'Kinh tế, khủng hoảng kinh tế, tài chính thế giới.'], ans: 2, detail: 'Kinh tế, chính trị, văn hoá, xã hội, môi trường cho các quốc gia.' },
+            { id: 't2_q4', topic: 't2', num: 4, q: 'Một trong những nội dung giải quyết vấn đề dân tộc theo quan điểm của Lê-nin:', options: ['Các dân tộc phải phân chia đẳng cấp rõ ràng.', 'Các dân tộc hoàn toàn bình đẳng.', 'Các dân tộc phải tự trị ly khai.', 'Các dân tộc phải có nền văn hoá chung.'], ans: 1, detail: 'Các dân tộc hoàn toàn bình đẳng.' },
+            { id: 't2_q5', topic: 't2', num: 5, q: 'Tư tưởng Hồ Chí Minh, về nội dung giải quyết vấn đề dân tộc:', options: ['Phải toàn diện, phong phú, sâu sắc, khoa học và cách mạng.', 'Phải xây dựng quan hệ tốt đẹp giữa các dân tộc trong đại gia đình các dân tộc Việt Nam.', 'Phải xây dựng quan hệ tốt đẹp giữa dân tộc Việt Nam với các quốc gia, dân tộc trên thế giới.', 'Phải bình đẳng, đoàn kết, tôn trọng và giúp đỡ cùng phát triển.'], ans: 3, detail: 'Phải bình đẳng, đoàn kết, tôn trọng và giúp đỡ cùng phát triển.' },
+            { id: 't2_q6', topic: 't2', num: 6, q: 'Đồng bào các dân tộc Jrai, Êđê, BaNa sinh sống chủ yếu ở khu vực nào?', options: ['Các tỉnh Tây Nguyên', 'Ở các tỉnh miền núi tiếp giáp biên giới', 'Các tỉnh Nam Trung Bộ', 'Các tỉnh miền núi phía Bắc'], ans: 0, detail: 'Các tỉnh Tây Nguyên.' },
+            { id: 't2_q7', topic: 't2', num: 7, q: 'Một trong những đặc trưng của các dân tộc Việt Nam là:', options: ['Là lịch sử đánh giặc ngoại xâm.', 'Có truyền thống đoàn kết, gắn bó xây dựng Quốc gia thống nhất.', 'Đoàn kết gắn bó trong chiến tranh bảo vệ Tổ quốc xã hội chủ nghĩa.', 'Cần cù sáng tạo trong xây dựng đất nước.'], ans: 1, detail: 'Có truyền thống đoàn kết, gắn bó xây dựng Quốc gia thống nhất.' },
+            { id: 't2_q8', topic: 't2', num: 8, q: 'Một trong những đặc trưng của các dân tộc ở Việt Nam là:', options: ['Các dân tộc thiểu số ở Việt Nam cư trú du canh, du cư.', 'Các dân tộc thiểu số ở Việt Nam cư trú tập trung.', 'Các dân tộc thiểu số ở Việt Nam cư trú ở rừng núi.', 'Các dân tộc thiểu số ở Việt Nam cư trú phân tán và xen kẽ.'], ans: 3, detail: 'Các dân tộc thiểu số ở Việt Nam cư trú phân tán và xen kẽ.' },
+            { id: 't2_q9', topic: 't2', num: 9, q: 'Một trong những đặc trưng của các dân tộc ở Việt Nam là:', options: ['Các dân tộc ở nước ta có quy mô dân số và trình độ phát triển cao.', 'Các dân tộc ở nước ta có quy mô dân số và trình độ phát triển còn hạn chế.', 'Các dân tộc ở nước ta có quy mô dân số và trình độ phát triển không đều.', 'Các dân tộc ở nước ta có quy mô dân số và trình độ phát triển đồng đều.'], ans: 2, detail: 'Các dân tộc ở nước ta có quy mô dân số và trình độ phát triển không đều.' },
+            { id: 't2_q10', topic: 't2', num: 10, q: 'Thực hiện chính sách dân tộc của Đảng, cần chống các biểu hiện gì?', options: ['Tư tưởng dân tộc lớn, kì thị, hẹp hòi, chia rẽ dân tộc.', 'Thiếu hiểu biết các phong tục tập quán các dân tộc Việt Nam.', 'Lợi dụng vấn đề dân tộc đòi tự trị gây mất ổn định chính trị.', 'Lợi dụng vấn đề dân tộc để chống phá khối đại đoàn kết dân tộc.'], ans: 0, detail: 'Tư tưởng dân tộc lớn, kì thị, hẹp hòi, chia rẽ dân tộc.' },
+            { id: 't2_q11', topic: 't2', num: 11, q: 'Tôn giáo là gì?', options: ['Là một hình thức ý thức xã hội, phản ánh hiện thực khách quan, theo quan niệm hoang đường.', 'Là một hình thái ý thức xã hội, phản ánh hiện thực khách quan, theo quan niệm hoang đường.', 'Là một hình thái phản ánh ý thức xã hội, hiện thực khách quan, theo quan niệm hoang đường.', 'Là sự nhận thức, phản ánh hiện thực khách quan, theo quan điểm hoang đường.'], ans: 1, detail: 'Là một hình thái ý thức xã hội, phản ánh hiện thực khách quan, theo quan niệm hoang đường.' },
+            { id: 't2_q12', topic: 't2', num: 12, q: 'Tôn giáo là một hình thái ý thức xã hội, phản ánh hiện thực khách quan, theo:', options: ['Trào lưu của xã hội phù hợp với tư tưởng, tình cảm, niềm tin của con người.', 'Quy luật phát triển của đời sống xã hội, được mọi người tin tưởng tham gia.', 'Quan niệm hoang đường, ảo tưởng, phù hợp với tâm lý, hành vi của con người.', 'Chuẩn mực đạo đức, truyền thống được con người tiếp nhận tin theo.'], ans: 2, detail: 'Quan niệm hoang đường, ảo tưởng, phù hợp với tâm lý, hành vi của con người.' },
+            { id: 't2_q13', topic: 't2', num: 13, q: 'Trong đời sống xã hội, tôn giáo là một cộng đồng xã hội có yếu tố nào sau đây?', options: ['Hệ thống tôn giáo với các hoạt động của tu sĩ.', 'Hệ thống giáo lý, nghi lễ và tổ chức tôn giáo.', 'Tín ngưỡng tôn giáo, các hoạt động tôn giáo trong nước.', 'Hệ thống chính trị của tôn giáo và tín ngưỡng.'], ans: 1, detail: 'Hệ thống giáo lý, nghi lễ và tổ chức tôn giáo.' },
+            { id: 't2_q14', topic: 't2', num: 14, q: 'Tôn giáo có nguồn gốc từ các yếu tố:', options: ['Kinh tế - xã hội, ý thức và hành vi.', 'Chính trị xã hội, tinh thần và tâm lý.', 'Kinh tế - xã hội, nhận thức và tâm lý.', 'Chính trị - xã hội, kinh tế và tinh thần.'], ans: 2, detail: 'Kinh tế - xã hội, nhận thức và tâm lý.' },
+            { id: 't2_q15', topic: 't2', num: 15, q: '“Tình cảm, cảm xúc, tâm trạng lo âu, sợ hãi...đã dẫn con người đến sự khuất phục”. Nội dung này muốn nói đến nguồn gốc nào của tôn giáo?', options: ['Nguồn gốc nhận thức của tôn giáo.', 'Nguồn gốc kinh tế - xã hội.', 'Nguồn gốc tâm lý của tôn giáo.', 'Nguồn gốc nhận thức, tâm lý.'], ans: 2, detail: 'Nguồn gốc tâm lý của tôn giáo.' },
+            { id: 't2_q16', topic: 't2', num: 16, q: 'Một trong những nguyên nhân làm cho tôn giáo tiếp tục tồn tại và phát triển là gì?', options: ['Con người còn phụ thuộc vào sự phát triển của khoa học kỹ thuật.', 'Con người vẫn chưa làm chủ hoàn toàn tự nhiên, xã hội và tư duy.', 'Do thiên tai, sóng thần, động đất..., ảnh hưởng đến đời sống xã hội.', 'Tất cả a, b, c đều đúng.'], ans: 3, detail: 'Tất cả a, b, c đều đúng.' },
+            { id: 't2_q17', topic: 't2', num: 17, q: 'Khi nào thì tôn giáo mất đi?', options: ['Khi những nguồn gốc sinh ra tôn giáo mất đi.', 'Khi con người làm chủ hoàn toàn tự nhiên, xã hội và tư duy.', 'Khi chế độ CNXH được xây dựng thành công trên phạm vi toàn thế giới.', 'Tôn giáo không bao giờ mất đi.'], ans: 0, detail: 'Khi những nguồn gốc sinh ra tôn giáo mất đi.' },
+            { id: 't2_q18', topic: 't2', num: 18, q: 'Xung đột giữa các tôn giáo thể hiện tính chất gì của tôn giáo?', options: ['Tính lịch sử.', 'Tính quần chúng.', 'Tính chính trị.', 'Tất cả a, b, c đều đúng.'], ans: 2, detail: 'Tính chính trị.' },
+            { id: 't2_q19', topic: 't2', num: 19, q: 'Giải quyết vấn đề tôn giáo phải gắn với quá trình nào?', options: ['Xóa bỏ xã hội cũ, tiến hành đổi mới toàn diện xã hội.', 'Xây dựng xã hội mới, đồng thời tiến hành đổi mới toàn diện xã hội.', 'Cải tạo xã hội cũ, xây dựng xã hội mới - xã hội xã hội chủ nghĩa.', 'Cải tạo xã hội cũ, tiến hành đổi mới toàn diện xã hội.'], ans: 2, detail: 'Cải tạo xã hội cũ, xây dựng xã hội mới - xã hội xã hội chủ nghĩa.' },
+            { id: 't2_q20', topic: 't2', num: 20, q: 'Theo quan điểm của Chủ nghĩa Mác - Lênin, giải quyết vấn đề tôn giáo trong cách mạng XHCN là:', options: ['Quán triệt quan điểm tôn trọng luật pháp.', 'Quán triệt quan điểm lịch sử cụ thể.', 'Quán triệt quan điểm tôn trọng quần chúng.', 'Quán triệt quan điểm tôn trọng giáo lý.'], ans: 1, detail: 'Quán triệt quan điểm lịch sử cụ thể.' },
+            { id: 't2_q21', topic: 't2', num: 21, q: 'Nội dung cốt lõi của công tác tôn giáo ở Việt Nam là:', options: ['Vận động quần chúng sống “kính chúa yêu nước”.', 'Vận động quần chúng sống “phúc âm trong lòng dân tộc”.', 'Vận động quần chúng sống “tốt đời, đẹp đạo”.', 'Vận động quần chúng sống “từ bi, bác ái”.'], ans: 2, detail: 'Vận động quần chúng sống “tốt đời, đẹp đạo”.' },
+            { id: 't2_q22', topic: 't2', num: 22, q: 'Để vô hiệu hoá sự lợi dụng vấn đề dân tộc, tôn giáo ở Việt Nam, giải pháp chung cơ bản nhất là:', options: ['Thực hiện tốt chính sách đại đoàn kết toàn dân tộc.', 'Thực hiện tốt chính sách phát triển kinh tế - xã hội.', 'Thực hiện tốt chính sách xoá đối giảm nghèo.', 'Thực hiện tốt chính sách đền ơn đáp nghĩa.'], ans: 0, detail: 'Thực hiện tốt chính sách đại đoàn kết toàn dân tộc.' },
+
+            // CHỦ ĐỀ 3
+            { id: 't3_q1', topic: 't3', num: 1, q: 'Môi trường là gì?', options: ['Là sản phẩm của tự nhiên và những yếu tố do con người tạo ra.', 'Là hệ thống các lĩnh vực về tự nhiên, xã hội có tác động đến con người.', 'Là hệ thống các yếu tố sẵn có trong tự nhiên có tác động đến con người và sinh vật.', 'Là hệ thống các yếu tố vật chất tự nhiên và nhân tạo có tác động đối với con người và sinh vật.'], ans: 3, detail: 'Là hệ thống các yếu tố vật chất tự nhiên và nhân tạo có tác động đối với con người và sinh vật.' },
+            { id: 't3_q2', topic: 't3', num: 2, q: 'Thành phần môi trường gồm?', options: ['Đất, nước, không khí', 'Âm thanh, ánh sáng', 'Sinh vật và các hình thái vật chất khác', 'Tất cả đều đúng'], ans: 3, detail: 'Tất cả đều đúng.' },
+            { id: 't3_q3', topic: 't3', num: 3, q: 'Một trong các nội dung của pháp luật về bảo vệ môi trường là?', options: ['Phòng ngừa, hạn chế các hành vi tác động xấu đến môi trường', 'Phòng ngừa, hạn chế các tác động xấu đến môi trường', 'Phòng ngừa các tác động ảnh hưởng đến môi trường sinh thái', 'Phòng ngừa các hành vi hủy hoại đến lĩnh vực môi trường'], ans: 1, detail: 'Phòng ngừa, hạn chế các tác động xấu đến môi trường.' },
+            { id: 't3_q4', topic: 't3', num: 4, q: 'Một trong các nội dung của pháp luật về bảo vệ môi trường là?', options: ['Khắc phục ô nhiễm, suy thoái, cải thiện, phục hồi môi trường', 'Phòng ngừa các tác động ảnh hưởng đến môi trường sinh thái', 'Khai thác, bảo vệ sử dụng có kế hoạch môi trường tài nguyên', 'Tất cả đều đúng'], ans: 3, detail: 'Tất cả đều đúng.' },
+            { id: 't3_q5', topic: 't3', num: 5, q: 'Vai trò của pháp luật trong công tác bảo vệ môi trường là?', options: ['Xây dựng hệ thống các quy chuẩn; tiêu chuẩn môi trường để bảo vệ môi trường.', 'Qui định trách nhiệm của các tổ chức, cá nhân trong bảo vệ môi trường.', 'Xây dựng hệ thống các văn bản mang tính pháp lý để bảo vệ môi trường.', 'Xây dựng hệ thống các văn bản, qui phạm pháp luật về lĩnh vực môi trường.'], ans: 3, detail: 'Xây dựng hệ thống các văn bản, qui phạm pháp luật về lĩnh vực môi trường.' },
+            { id: 't3_q6', topic: 't3', num: 6, q: 'Vai trò của pháp luật trong công tác bảo vệ môi trường là?', options: ['Qui định trách nhiệm của các tổ chức, cá nhân trong bảo vệ môi trường', 'Giải quyết các tranh chấp liên quan đến bảo vệ môi trường.', 'Phòng ngừa, hạn chế các hành vi tác động xấu đến môi trường', 'Khai thác, bảo vệ sử dụng có kế hoạch môi trường tài nguyên'], ans: 1, detail: 'Giải quyết các tranh chấp liên quan đến bảo vệ môi trường.' },
+            { id: 't3_q7', topic: 't3', num: 7, q: 'Một trong những quy định của pháp luật về bảo vệ môi trường là?', options: ['Qui định về phòng ngừa các tác động ảnh hưởng đến môi trường sinh thái', 'Qui định các mức phạt cụ thể ảnh hưởng đến bảo vệ môi trường', 'Pháp luật về tổ chức, quản lý các hoạt động bảo vệ môi trường', 'Pháp luật về nghiêm cấm các hành vi vi phạm đến bảo vệ môi trường'], ans: 2, detail: 'Pháp luật về tổ chức, quản lý các hoạt động bảo vệ môi trường.' },
+            { id: 't3_q8', topic: 't3', num: 8, q: 'Một trong những quy định của pháp luật về bảo vệ môi trường là?', options: ['Pháp luật xử lý vi phạm trong lĩnh vực bảo vệ môi trường', 'Pháp luật về nghiêm cấm các hành vi vi phạm đến bảo vệ môi trường', 'Pháp luật về các mức phạt cụ thể đối với hành vi vi phạm đến bảo vệ môi trường', 'Pháp luật qui định các hành vi phải chịu trách nhiệm hình sự về bảo vệ môi trường'], ans: 0, detail: 'Pháp luật xử lý vi phạm trong lĩnh vực bảo vệ môi trường.' },
+            { id: 't3_q9', topic: 't3', num: 9, q: 'Hình thức vi phạm pháp luật về bảo vệ môi trường là?', options: ['Tội phạm về môi trường và vi phạm hành chính trong lĩnh vực bảo vệ môi trường', 'Chống người thi hành công vụ trong lĩnh vực bảo vệ môi trường sinh thái', 'Vi phạm các quy định của pháp luật gây hậu quả về bảo vệ môi trường', 'Những hành vi có lỗi do cá nhân, tổ chức thực hiện gây hậu quả đến môi trường'], ans: 0, detail: 'Tội phạm về môi trường và vi phạm hành chính trong lĩnh vực bảo vệ môi trường.' },
+            { id: 't3_q10', topic: 't3', num: 10, q: 'Nguyên nhân, điều kiện của vi phạm pháp luật về môi trường là?', options: ['Sự nhận thức của các cá nhân về bảo vệ môi trường còn hạn chế', 'Tuyên truyền của cơ quan Nhà nước về bảo vệ môi trường còn bất cập', 'Sự phát triển “quá nhanh” và “nóng” của kinh tế - xã hội...', 'Pháp luật về bảo vệ môi trường, về xử lý hành vi vi phạm chưa đủ mạnh...'], ans: 2, detail: 'Sự phát triển “quá nhanh” và “nóng” của kinh tế - xã hội...' },
+            { id: 't3_q11', topic: 't3', num: 11, q: 'Nguyên nhân về phía đối tượng vi phạm là?', options: ['Ý thức coi thường pháp luật, không tuân thủ các quy tắc, chuẩn mực xã hội', 'Thiếu hiểu biết về luật pháp đối với lĩnh vực bảo vệ môi trường', 'Do vụ lợi của các cá nhân, tổ chức dẫn tới coi thường pháp luật', 'Do tác động mặt trái của kinh tế thị trường và những hiện tượng tiêu cực khác'], ans: 2, detail: 'Do vụ lợi của các cá nhân, tổ chức dẫn tới coi thường pháp luật.' },
+            { id: 't3_q12', topic: 't3', num: 12, q: 'Phòng, chống vi phạm pháp luật về bảo vệ môi trường là hoạt động:', options: ['Của các cấp, các ngành, các đoàn thể và mọi công dân', 'Của các cơ quan nhà nước, các tổ chức xã hội và công dân', 'Của các cơ quan chức năng có nhiệm vụ trong lĩnh vực bảo vệ môi trường', 'Của Bộ Tài nguyên Môi trường và các cơ quan chuyên trách'], ans: 1, detail: 'Của các cơ quan nhà nước, các tổ chức xã hội và công dân.' },
+            { id: 't3_q13', topic: 't3', num: 13, q: 'Cách giải quyết khi vi phạm pháp luật về bảo vệ môi trường xảy ra?', options: ['Hạn chế đến mức thấp nhất hậu quả tác hại', 'Khắc phục hậu quả, không để ảnh đến môi trường', 'Điều tra tìm hiểu nguyên nhân, điều kiện của hành vi vi phạm', 'Đề ra chủ trương, biện pháp khắc phục hậu quả'], ans: 0, detail: 'Hạn chế đến mức thấp nhất hậu quả tác hại.' },
+            { id: 't3_q14', topic: 't3', num: 14, q: 'Nội dung, biện pháp phòng, chống vi phạm pháp luật về bảo vệ môi trường:', options: ['Nắm tình hình vi phạm pháp luật về bảo vệ môi trường', 'Xác định và làm rõ các nguyên nhân, điều kiện của vi phạm', 'Tổ chức lực lượng tiến hành các hoạt động khắc phục', 'Tất cả đều đúng'], ans: 3, detail: 'Tất cả đều đúng.' },
+            { id: 't3_q15', topic: 't3', num: 15, q: 'Các biện pháp phòng, chống vi phạm pháp luật về bảo vệ môi trường:', options: ['Các biện pháp phòng, chống chung và cụ thể', 'Sử dụng nhiều biện pháp trong lĩnh vực bảo vệ môi trường', 'Tuyên truyền các qui định của Nhà nước về bảo vệ môi trường', 'Thành lập lực lượng chuyên trách trong lĩnh vực bảo vệ môi trường'], ans: 0, detail: 'Các biện pháp phòng, chống chung và cụ thể.' },
+            { id: 't3_q16', topic: 't3', num: 16, q: 'Chủ thể tham gia phòng, chống vi phạm pháp luật về bảo vệ môi trường:', options: ['Là trách nhiệm của các cơ quan, đoàn thể', 'Là trách nhiệm của các Ban, Ngành được Nhà nước qui định', 'Là trách nhiệm của toàn xã hội.', 'Là trách nhiệm của các tổ chức và công dân'], ans: 2, detail: 'Là trách nhiệm của toàn xã hội.' },
+            { id: 't3_q17', topic: 't3', num: 17, q: 'Trách nhiệm của nhà trường trong phòng, chống vi phạm về bảo vệ môi trường:', options: ['Tổ chức các buổi tuyên truyền về bảo vệ môi trường', 'Tổ chức các buổi tọa đàm, trao đổi về bảo vệ môi trường', 'Tổ chức các cuộc thi tìm hiểu về bảo vệ môi trường', 'Tất cả đều đúng'], ans: 3, detail: 'Tất cả đều đúng.' },
+            { id: 't3_q18', topic: 't3', num: 18, q: 'Trách nhiệm của sinh viên trong phòng, chống vi phạm về bảo vệ môi trường:', options: ['Nắm vững các quy định của pháp luật về bảo vệ môi trường', 'Xây dựng ý thức trách nhiệm trong các hoạt động bảo vệ môi trường', 'Tham gia tích cực trong các phong trào về bảo vệ môi trường.', 'Tất cả đều đúng'], ans: 3, detail: 'Tất cả đều đúng.' },
+
+            // CHỦ ĐỀ 4 (MỞ RỘNG)
+            { id: 't4_q1', topic: 't4', num: 1, q: 'Một trong những công cụ quan trọng bảo vệ quyền con người là?', options: ['Hệ thống pháp luật (Hiến pháp, các đạo luật) và các thiết chế nhà nước.', 'Các phong tục, tập quán truyền thống.', 'Các quy ước nội bộ doanh nghiệp.', 'Sự tự thỏa thuận dân sự.'], ans: 0, detail: 'Hệ thống pháp luật và các thiết chế nhà nước.' },
+            { id: 't4_q2', topic: 't4', num: 2, q: 'Bảo vệ con người là gì?', options: ['Chỉ bảo vệ tài sản vật chất.', 'Là bảo đảm cho con người được sống, phát triển an toàn, hưởng các quyền cơ bản và không bị xâm phạm.', 'Chỉ bảo vệ công dân ở nước ngoài.', 'Miễn trừ trách nhiệm pháp lý.'], ans: 1, detail: 'Bảo đảm cho con người được sống, phát triển an toàn, hưởng các quyền cơ bản và không bị xâm phạm.' },
+            { id: 't4_q3', topic: 't4', num: 3, q: 'Danh dự, nhân phẩm của con người được hình thành như thế nào?', options: ['Có sẵn khi sinh ra.', 'Phụ thuộc tài sản sở hữu.', 'Được hình thành từ quá trình sống, học tập, lao động, cống hiến và được xã hội thừa nhận.', 'Do tổ chức tự phong.'], ans: 2, detail: 'Được hình thành từ quá trình sống, học tập, lao động, cống hiến và được xã hội thừa nhận.' },
+            { id: 't4_q4', topic: 't4', num: 4, q: 'Theo Luật Hình sự, các tội xâm phạm danh dự nhân phẩm gồm:', options: ['Tội trốn thuế, buôn lậu.', 'Tội làm nhục người khác, tội vu khống, đe dọa giết người, xâm hại tình dục...', 'Tội vi phạm giao thông.', 'Tội hủy hoại rừng.'], ans: 1, detail: 'Tội làm nhục người khác, tội vu khống, đe dọa giết người, xâm hại tình dục...' },
+            { id: 't4_q5', topic: 't4', num: 5, q: 'Nguyên nhân phạm tội xâm phạm danh dự nhân phẩm thường do:', options: ['Do khoa học kỹ thuật.', 'Mâu thuẫn cá nhân; suy thoái đạo đức; văn hóa phẩm độc hại; kỷ cương pháp luật chưa nghiêm.', 'Do nhà nước tuyên truyền nhiều.', 'Do tham gia phong trào.'], ans: 1, detail: 'Mâu thuẫn cá nhân; suy thoái đạo đức; văn hóa phẩm độc hại; kỷ cương pháp luật chưa nghiêm.' },
+            { id: 't4_q6', topic: 't4', num: 6, q: 'Đặc điểm phòng chống tội phạm:', options: ['Chỉ là nhiệm vụ của công an.', 'Mang tính xã hội sâu sắc, đòi hỏi sức mạnh tổng hợp của toàn hệ thống chính trị và nhân dân.', 'Chỉ khi hậu quả nghiêm trọng.', 'Mang tính thời vụ.'], ans: 1, detail: 'Mang tính xã hội sâu sắc, đòi hỏi sức mạnh tổng hợp của toàn hệ thống chính trị và nhân dân.' },
+            { id: 't4_q7', topic: 't4', num: 7, q: 'Ý nghĩa chính trị xã hội của phòng chống tội phạm:', options: ['Giữ vững an ninh trật tự, củng cố niềm tin vào Đảng và Nhà nước, tạo môi trường ổn định.', 'Tăng thu ngân sách.', 'Thay thế giáo dục nhà trường.', 'Xóa bỏ mâu thuẫn kinh tế.'], ans: 0, detail: 'Giữ vững an ninh trật tự, củng cố niềm tin vào Đảng và Nhà nước, tạo môi trường ổn định.' },
+            { id: 't4_q8', topic: 't4', num: 8, q: 'Ý nghĩa kinh tế của phòng ngừa tội phạm:', options: ['Tăng chi phí trại giam.', 'Tiết kiệm chi phí cho xã hội, bảo vệ tài sản nhà nước và công dân.', 'Không tác động kinh tế.', 'Lợi ích bảo hiểm.'], ans: 1, detail: 'Tiết kiệm chi phí cho xã hội, bảo vệ tài sản nhà nước và công dân.' },
+            { id: 't4_q9', topic: 't4', num: 9, q: 'Công tác phòng chống tội phạm tiến hành theo hướng:', options: ['Chỉ trừng trị nặng.', 'Kết hợp chặt chẽ giữa phòng ngừa và trừng trị, lấy phòng ngừa là chính.', 'Kết hợp giáo dục và phạt tiền.', 'Giao xã tự giải quyết.'], ans: 1, detail: 'Kết hợp chặt chẽ giữa phòng ngừa và trừng trị, lấy phòng ngừa là chính.' },
+            { id: 't4_q10', topic: 't4', num: 10, q: 'Mục đích phòng ngừa tội phạm:', options: ['Ngăn chặn không để tội phạm xảy ra; hạn chế, loại trừ nguyên nhân điều kiện phát sinh.', 'Tăng số vụ án xét xử.', 'Theo dõi người có tiền án.', 'Giảm biên chế.'], ans: 0, detail: 'Ngăn chặn không để tội phạm xảy ra; hạn chế, loại trừ nguyên nhân điều kiện phát sinh.' },
+            { id: 't4_q11', topic: 't4', num: 11, q: 'Phòng chống tệ nạn xã hội là trách nhiệm của:', options: ['Chỉ Bộ LĐTBXH.', 'Chỉ gia đình.', 'Trách nhiệm của toàn xã hội (Nhà nước, gia đình, nhà trường, công dân).', 'Chỉ cảnh sát hình sự.'], ans: 2, detail: 'Trách nhiệm của toàn xã hội.' },
+            { id: 't4_q12', topic: 't4', num: 12, q: 'Chức năng Chính phủ và UBND trong phòng chống tội phạm:', options: ['Trực tiếp xét xử.', 'Quản lý, điều hành, tổ chức thực hiện chương trình quốc gia phòng chống tội phạm.', 'Soạn thảo Hiến pháp.', 'Thực hiện công tố.'], ans: 1, detail: 'Quản lý, điều hành, tổ chức thực hiện chương trình quốc gia phòng chống tội phạm.' },
+            { id: 't4_q13', topic: 't4', num: 13, q: 'Công dân trong phòng chống tội phạm phải:', options: ['Tự lập tòa án.', 'Chấp hành pháp luật, tham gia phong trào toàn dân bảo vệ an ninh Tổ quốc, tố giác tội phạm.', 'Đứng ngoài cuộc.', 'Chỉ bảo vệ bản thân.'], ans: 1, detail: 'Chấp hành pháp luật, tham gia phong trào toàn dân bảo vệ an ninh Tổ quốc, tố giác tội phạm.' },
+            { id: 't4_q14', topic: 't4', num: 14, q: 'Nguyên tắc tổ chức phòng chống tội phạm:', options: ['Dưới sự lãnh đạo của Đảng, quản lý của Nhà nước, phát huy sức mạnh tổng hợp của toàn dân.', 'Tự phát.', 'Tách rời Đảng.', 'Dựa vào viện trợ nước ngoài.'], ans: 0, detail: 'Dưới sự lãnh đạo của Đảng, quản lý của Nhà nước, phát huy sức mạnh tổng hợp của toàn dân.' },
+            { id: 't4_q15', topic: 't4', num: 15, q: 'Hoạt động phòng ngừa tội phạm gồm:', options: ['Tuyên truyền giáo dục pháp luật; quản lý ANTT; tuần tra kiểm soát; giải quyết mâu thuẫn.', 'Cấm ra đường ban đêm.', 'Đóng cửa internet.', 'Xử phạt giao thông.'], ans: 0, detail: 'Tuyên truyền giáo dục pháp luật; quản lý ANTT; tuần tra kiểm soát; giải quyết mâu thuẫn.' },
+            { id: 't4_q16', topic: 't4', num: 16, q: 'Phòng ngừa chung là:', options: ['Áp dụng biện pháp trên diện rộng nhằm loại trừ nguyên nhân điều kiện phát sinh tội phạm trong toàn xã hội.', 'Giám sát một cá nhân.', 'Xét xử lưu động.', 'Cách ly tội phạm.'], ans: 0, detail: 'Áp dụng biện pháp trên diện rộng nhằm loại trừ nguyên nhân điều kiện phát sinh tội phạm trong toàn xã hội.' },
+            { id: 't4_q17', topic: 't4', num: 17, q: 'Trách nhiệm của nhà trường trong phòng chống tội phạm (1):', options: ['Quản lý, giáo dục đạo đức, pháp luật; xây dựng môi trường học đường an toàn không tệ nạn.', 'Khởi tố vụ án hình sự.', 'Chỉ dạy môn tự nhiên.', 'Phạt tiền sinh viên.'], ans: 0, detail: 'Quản lý, giáo dục đạo đức, pháp luật; xây dựng môi trường học đường an toàn không tệ nạn.' },
+            { id: 't4_q18', topic: 't4', num: 18, q: 'Trách nhiệm của nhà trường (2):', options: ['Giao hết cho gia đình.', 'Phối hợp chặt chẽ với gia đình và chính quyền địa phương.', 'Chỉ quản lý giờ chính khóa.', 'Cấm tham gia xã hội.'], ans: 1, detail: 'Phối hợp chặt chẽ với gia đình và chính quyền địa phương.' },
+            { id: 't4_q19', topic: 't4', num: 19, q: 'Trách nhiệm của sinh viên:', options: ['Chỉ học chuyên môn.', 'Không vi phạm pháp luật, không tham gia tệ nạn; tích cực học tập, rèn luyện, bảo vệ an ninh học đường.', 'Dùng vũ lực giải quyết mâu thuẫn.', 'Che giấu vi phạm.'], ans: 1, detail: 'Không vi phạm pháp luật, không tham gia tệ nạn; tích cực học tập, rèn luyện, bảo vệ an ninh học đường.' },
+            { id: 't4_q20', topic: 't4', num: 20, q: 'Để phòng ngừa hậu quả tội phạm ở trường lớp cần:', options: ['Chấp hành nội quy; đoàn kết giúp đỡ nhau; báo cáo thầy cô khi có mầm mống bạo lực.', 'Lập nhóm kín công kích.', 'Làm ngơ.', 'Tự ý nghỉ học.'], ans: 0, detail: 'Chấp hành nội quy; đoàn kết giúp đỡ nhau; báo cáo thầy cô khi có mầm mống bạo lực.' },
+
+            // CHỦ ĐỀ 5 (MỞ RỘNG)
+            { id: 't5_q1', topic: 't5', num: 1, q: 'Mục tiêu an ninh quốc gia (1):', options: ['Bảo vệ độc lập, chủ quyền, thống nhất và toàn vẹn lãnh thổ.', 'Mở rộng lãnh thổ.', 'Can thiệp nước khác.', 'Độc quyền hàng hải.'], ans: 0, detail: 'Bảo vệ độc lập, chủ quyền, thống nhất và toàn vẹn lãnh thổ.' },
+            { id: 't5_q2', topic: 't5', num: 2, q: 'Mục tiêu an ninh quốc gia (2):', options: ['Bảo vệ tập đoàn nước ngoài.', 'Bảo vệ Đảng, Nhà nước, nhân dân và chế độ XHCN.', 'Đa nguyên đa đảng.', 'Tách rời quân đội khỏi Đảng.'], ans: 1, detail: 'Bảo vệ Đảng, Nhà nước, nhân dân và chế độ XHCN.' },
+            { id: 't5_q3', topic: 't5', num: 3, q: 'Nội dung an ninh quốc gia:', options: ['Chỉ biên giới hải đảo.', 'An ninh chính trị, kinh tế, tư tưởng - văn hóa, xã hội.', 'Chỉ quân sự.', 'Chỉ tình báo.'], ans: 1, detail: 'An ninh chính trị, kinh tế, tư tưởng - văn hóa, xã hội.' },
+            { id: 't5_q4', topic: 't5', num: 4, q: 'Trọng tâm bảo đảm an ninh quốc gia:', options: ['Mua vũ khí hạt nhân.', 'Bảo vệ sự vững mạnh của Đảng, Nhà nước, chế độ XHCN và giữ vững ổn định chính trị xã hội.', 'Đóng cửa biên giới.', 'Chỉ kinh tế tư nhân.'], ans: 1, detail: 'Bảo vệ sự vững mạnh của Đảng, Nhà nước, chế độ XHCN và giữ vững ổn định chính trị xã hội.' },
+            { id: 't5_q5', topic: 't5', num: 5, q: 'Thách thức nguy cơ đối với an ninh quốc gia:', options: ['Giao lưu thể thao.', 'Âm mưu "Diễn biến hòa bình", bạo loạn lật đổ; các mối đe dọa an ninh phi truyền thống.', 'Mở rộng giáo dục.', 'Xuất khẩu nông sản.'], ans: 1, detail: 'Âm mưu "Diễn biến hòa bình", bạo loạn lật đổ; các mối đe dọa an ninh phi truyền thống.' },
+            { id: 't5_q6', topic: 't5', num: 6, q: 'Phương hướng nhiệm vụ bảo vệ an ninh quốc gia:', options: ['Chờ sự cố rồi đối phó.', 'Chủ động phòng ngừa, phát hiện, đấu tranh làm thất bại mọi âm mưu xâm phạm an ninh quốc gia.', 'Ủy thác quốc tế.', 'Chỉ dùng vũ trang.'], ans: 1, detail: 'Chủ động phòng ngừa, phát hiện, đấu tranh làm thất bại mọi âm mưu xâm phạm an ninh quốc gia.' },
+            { id: 't5_q7', topic: 't5', num: 7, q: 'An ninh phi truyền thống phổ biến rõ nét từ khi nào?', options: ['Cổ đại.', 'Chiến tranh thế giới 1.', 'Từ sau Chiến tranh Lạnh (từ những năm 1990 trở lại đây).', 'Năm 2025.'], ans: 2, detail: 'Từ sau Chiến tranh Lạnh (từ những năm 1990 trở lại đây).' },
+            { id: 't5_q8', topic: 't5', num: 8, q: 'An ninh phi truyền thống là gì?', options: ['Chiến tranh quân sự giữa các nước.', 'Các vấn đề, hiểm họa phi quân sự (dịch bệnh, biến đổi khí hậu, khủng bố, mạng...) đe dọa sinh tồn.', 'Chạy đua vũ trang hạt nhân.', 'Bảo vệ biên giới truyền thống.'], ans: 1, detail: 'Các vấn đề, hiểm họa phi quân sự (dịch bệnh, biến đổi khí hậu, khủng bố, mạng...) đe dọa sinh tồn.' },
+            { id: 't5_q9', topic: 't5', num: 9, q: 'Nội dung an ninh phi truyền thống gồm:', options: ['An ninh mạng, năng lượng, nguồn nước, biến đổi khí hậu, dịch bệnh, khủng bố.', 'Chiến tranh biên giới.', 'Xây pháo đài.', 'Điều lệnh quân đội.'], ans: 0, detail: 'An ninh mạng, năng lượng, nguồn nước, biến đổi khí hậu, dịch bệnh, khủng bố.' },
+            { id: 't5_q10', topic: 't5', num: 10, q: 'Toàn cầu hóa ảnh hưởng đến an ninh phi truyền thống như thế nào?', options: ['Xóa bỏ dịch bệnh.', 'Làm các mối đe dọa lan truyền nhanh chóng, xuyên biên giới, không nước nào tự giải quyết được.', 'Chỉ giới hạn 1 địa phương.', 'Không ảnh hưởng.'], ans: 1, detail: 'Làm các mối đe dọa lan truyền nhanh chóng, xuyên biên giới, không nước nào tự giải quyết được.' },
+            { id: 't5_q11', topic: 't5', num: 11, q: 'Giải quyết an ninh phi truyền thống là nhiệm vụ của ai?', options: ['Chỉ nước lớn.', 'Chỉ WHO.', 'Nhiệm vụ chung của toàn nhân loại, cần hợp tác quốc tế và sự vào cuộc của cả hệ thống chính trị.', 'Chỉ quân đội.'], ans: 2, detail: 'Nhiệm vụ chung của toàn nhân loại, cần hợp tác quốc tế và sự vào cuộc của cả hệ thống chính trị.' },
+            { id: 't5_q12', topic: 't5', num: 12, q: 'Thách thức an ninh phi truyền thống ở Việt Nam (1):', options: ['Biến đổi khí hậu (bão lụt, hạn hán, nước biển dâng, xâm nhập mặn).', 'Dư thừa tài nguyên.', 'Dân số giảm.', 'Không có bờ biển.'], ans: 0, detail: 'Biến đổi khí hậu (bão lụt, hạn hán, nước biển dâng, xâm nhập mặn).' },
+            { id: 't5_q13', topic: 't5', num: 13, q: 'Thách thức an ninh phi truyền thống ở Việt Nam (2):', options: ['Sự lây lan nhanh chóng của dịch bệnh truyền nhiễm nguy hiểm.', 'Băng tuyết quanh năm.', 'Mất mạng viễn thông.', 'Láng giềng đóng cửa biên giới.'], ans: 0, detail: 'Sự lây lan nhanh chóng của dịch bệnh truyền nhiễm nguy hiểm.' },
+            { id: 't5_q14', topic: 't5', num: 14, q: 'Thách thức an ninh phi truyền thống ở Việt Nam (3):', options: ['Tội phạm công nghệ cao và nguy cơ mất an toàn không gian mạng.', 'Không dùng điện thoại.', 'Giảm đại học.', 'Thiếu nghĩa vụ quân sự.'], ans: 0, detail: 'Tội phạm công nghệ cao và nguy cơ mất an toàn không gian mạng.' },
+            { id: 't5_q15', topic: 't5', num: 15, q: 'Thách thức an ninh phi truyền thống đối với QP-AN:', options: ['Giảm nhu cầu hiện đại hóa.', 'Kẻ thù lợi dụng không gian mạng, khủng bố, buôn lậu vũ khí đe dọa trực tiếp an ninh quốc gia.', 'Không cần tuần tra biên giới.', 'Chỉ ảnh hưởng kinh tế.'], ans: 1, detail: 'Kẻ thù lợi dụng không gian mạng, khủng bố, buôn lậu vũ khí đe dọa trực tiếp an ninh quốc gia.' },
+            { id: 't5_q16', topic: 't5', num: 16, q: 'Giải pháp ứng phó an ninh phi truyền thống (1):', options: ['Giấu thông tin.', 'Nâng cao nhận thức của toàn xã hội về các mối đe dọa an ninh phi truyền thống.', 'Ngừng công nghiệp.', 'Cấm mạng xã hội.'], ans: 1, detail: 'Nâng cao nhận thức của toàn xã hội về các mối đe dọa an ninh phi truyền thống.' },
+            { id: 't5_q17', topic: 't5', num: 17, q: 'Giải pháp ứng phó an ninh phi truyền thống (2):', options: ['Hoàn thiện hệ thống pháp luật, cơ chế chính sách để chủ động ứng phó.', 'Bãi bỏ kiểm dịch.', 'Giảm ngân sách dự báo.', 'Tự ban hành luật địa phương.'], ans: 0, detail: 'Hoàn thiện hệ thống pháp luật, cơ chế chính sách để chủ động ứng phó.' },
+            { id: 't5_q18', topic: 't5', num: 18, q: 'Trong chủ động phòng ngừa ứng phó cần:', options: ['Chờ cứu hộ quốc tế.', 'Xây dựng kịch bản, phương án phòng chống từ sớm từ xa; phát huy phương châm "4 tại chỗ".', 'Di dời lên núi.', 'Chỉ khắc phục hậu quả.'], ans: 1, detail: 'Xây dựng kịch bản, phương án phòng chống từ sớm từ xa; phát huy phương châm "4 tại chỗ".' },
+            { id: 't5_q19', topic: 't5', num: 19, q: 'Giải pháp ứng phó an ninh phi truyền thống (3):', options: ['Tăng cường đầu tư nguồn lực, đẩy mạnh nghiên cứu khoa học công nghệ và mở rộng hợp tác quốc tế.', 'Hạn chế hợp tác.', 'Cắt kinh phí nghiên cứu.', 'Dùng thủ công.'], ans: 0, detail: 'Tăng cường đầu tư nguồn lực, đẩy mạnh nghiên cứu khoa học công nghệ và mở rộng hợp tác quốc tế.' },
+            { id: 't5_q20', topic: 't5', num: 20, q: 'Trong hợp tác quốc tế về phòng ngừa an ninh phi truyền thống cần:', options: ['Từ chối công ước.', 'Tích cực tham gia hiệp ước quốc tế, chia sẻ thông tin, kinh nghiệm, phối hợp diễn tập chung.', 'Giữ bí mật dịch bệnh.', 'Chỉ hợp tác 1 nước.'], ans: 1, detail: 'Tích cực tham gia hiệp ước quốc tế, chia sẻ thông tin, kinh nghiệm, phối hợp diễn tập chung.' },
+            { id: 't5_q21', topic: 't5', num: 21, q: 'Huy động nguồn lực tài chính ứng phó bằng cách:', options: ['Vay lãi suất cao.', 'Kết hợp ngân sách nhà nước, quỹ phòng chống thiên tai, đóng góp của doanh nghiệp, nhân dân và viện trợ.', 'Bắt sinh viên đóng học bổng.', 'Tiền phạt hành chính.'], ans: 1, detail: 'Kết hợp ngân sách nhà nước, quỹ phòng chống thiên tai, đóng góp của doanh nghiệp, nhân dân và viện trợ.' },
+
+            // CHỦ ĐỀ 6 (MỞ RỘNG)
+            { id: 't6_q1', topic: 't6', num: 1, q: 'Thông tin là gì?', options: ['Chỉ là bài báo mạng.', 'Là sự phản ánh sự vật, hiện tượng thế giới khách quan và hoạt động con người.', 'Dữ liệu nhị phân máy tính.', 'Suy đoán chủ quan.'], ans: 1, detail: 'Là sự phản ánh sự vật, hiện tượng thế giới khách quan và hoạt động con người.' },
+            { id: 't6_q2', topic: 't6', num: 2, q: 'Vai trò của thông tin:', options: ['Chỉ giải trí.', 'Là nguồn lực quan trọng cho phát triển; giúp nhận thức thế giới, quản lý xã hội, phát triển kinh tế KHCN.', 'Không quan trọng.', 'Thay thế lao động.'], ans: 1, detail: 'Là nguồn lực quan trọng cho phát triển; giúp nhận thức thế giới, quản lý xã hội, phát triển kinh tế KHCN.' },
+            { id: 't6_q3', topic: 't6', num: 3, q: 'An toàn thông tin là gì?', options: ['Ngắt kết nối internet.', 'Bảo vệ thông tin và hệ thống tránh bị truy nhập, sử dụng, tiết lộ, phá hoại trái phép (bảo đảm bí mật, toàn vẹn, sẵn sàng).', 'Công khai dữ liệu.', 'Đặt mật khẩu điện thoại.'], ans: 1, detail: 'Bảo vệ thông tin và hệ thống tránh bị truy nhập, sử dụng, tiết lộ, phá hoại trái phép.' },
+            { id: 't6_q4', topic: 't6', num: 4, q: 'Thực trạng thông tin ở Việt Nam:', options: ['Kém phát triển.', 'Phát triển nhanh, mạnh; tuy nhiên có nhiều thông tin xấu độc, tin giả, hệ thống an toàn mạng còn lỗ hổng.', 'Tuyệt đối an toàn.', 'Chỉ có báo in.'], ans: 1, detail: 'Phát triển nhanh, mạnh; tuy nhiên có nhiều thông tin xấu độc, tin giả, hệ thống an toàn mạng còn lỗ hổng.' },
+            { id: 't6_q5', topic: 't6', num: 5, q: 'Nguyên tắc bảo vệ không gian mạng (1):', options: ['Tuân thủ Hiến pháp và pháp luật; bảo vệ lợi ích quốc gia, quyền và lợi ích hợp pháp của tổ chức, cá nhân.', 'Cho phép đăng tải tự do vô hạn.', 'Ưu tiên doanh nghiệp quảng cáo.', 'Chỉ bảo vệ web nhà nước.'], ans: 0, detail: 'Tuân thủ Hiến pháp và pháp luật; bảo vệ lợi ích quốc gia, quyền và lợi ích hợp pháp của tổ chức, cá nhân.' },
+            { id: 't6_q6', topic: 't6', num: 6, q: 'Nguyên tắc bảo vệ không gian mạng (2):', options: ['Cấm thương mại điện tử.', 'Kết hợp chặt chẽ giữa bảo vệ an ninh mạng, bảo vệ thông tin bí mật nhà nước với phát triển kinh tế xã hội.', 'Bỏ qua bảo vệ bí mật.', 'Giao toàn quyền cho nước ngoài.'], ans: 1, detail: 'Kết hợp chặt chẽ giữa bảo vệ an ninh mạng, bảo vệ thông tin bí mật nhà nước với phát triển kinh tế xã hội.' },
+            { id: 't6_q7', topic: 't6', num: 7, q: 'Điều 101 Nghị định 15 quy định mức phạt lợi dụng mạng xã hội chia sẻ thông tin sai sự thật:', options: ['Phạt 500k - 1 triệu.', 'Phạt tiền từ 10 - 20 triệu đồng (tổ chức), cá nhân bằng 1/2 (5 - 10 triệu).', 'Phạt 100 - 200 triệu.', 'Cảnh cáo.'], ans: 1, detail: 'Phạt tiền từ 10 - 20 triệu đồng (tổ chức), cá nhân bằng 1/2 (5 - 10 triệu).' },
+            { id: 't6_q8', topic: 't6', num: 8, q: 'Mức phạt phát tán thư rác, tin nhắn rác, phần mềm độc hại:', options: ['Phạt tiền (từ 20 - 100 triệu đối với phần mềm độc hại) theo Nghị định.', 'Phạt 100k - 200k.', 'Không phạt.', 'Tịch thu bất động sản.'], ans: 0, detail: 'Phạt tiền (từ 20 - 100 triệu đối với phần mềm độc hại) theo Nghị định.' },
+            { id: 't6_q9', topic: 't6', num: 9, q: 'Theo Điều 16 Luật An ninh mạng, thông tin chống Nhà nước gồm:', options: ['Góp ý đúng quy định.', 'Xuyên tạc, phỉ báng chính quyền; chiến tranh tâm lý, kích động chia rẽ bạo loạn; xúc phạm quốc kỳ, lãnh tụ.', 'Quảng bá du lịch.', 'Tin thời tiết.'], ans: 1, detail: 'Xuyên tạc, phỉ báng chính quyền; chiến tranh tâm lý, kích động chia rẽ bạo loạn; xúc phạm quốc kỳ, lãnh tụ.' },
+            { id: 't6_q10', topic: 't6', num: 10, q: 'Biện pháp phòng chống trên không gian mạng (1):', options: ['Biện pháp pháp luật (hoàn thiện hành lang pháp lý).', 'Cấm máy tính.', 'Xóa web.', 'Tấn công trả đũa.'], ans: 0, detail: 'Biện pháp pháp luật (hoàn thiện hành lang pháp lý).' },
+            { id: 't6_q11', topic: 't6', num: 11, q: 'Bảo vệ không gian mạng quốc gia là:', options: ['Phòng ngừa, phát hiện, ngăn chặn, xử lý hành vi xâm phạm an ninh mạng, bảo đảm hệ thống thông tin quan trọng.', 'Sửa cáp quang biển.', 'Cung cấp wifi miễn phí.', 'Bảo vệ máy game.'], ans: 0, detail: 'Phòng ngừa, phát hiện, ngăn chặn, xử lý hành vi xâm phạm an ninh mạng, bảo đảm hệ thống thông tin quan trọng.' },
+            { id: 't6_q12', topic: 't6', num: 12, q: 'Biện pháp phòng chống trên không gian mạng (2):', options: ['Biện pháp kỹ thuật (sử dụng công nghệ, phần mềm bảo mật).', 'Dùng pass 123456.', 'Tắt diệt virus.', 'Chia sẻ pass cho người lạ.'], ans: 0, detail: 'Biện pháp kỹ thuật (sử dụng công nghệ, phần mềm bảo mật).' },
+            { id: 't6_q13', topic: 't6', num: 13, q: 'Biện pháp phòng chống trên không gian mạng (3):', options: ['Biện pháp giáo dục tuyên truyền, nâng cao ý thức cảnh giác.', 'Dùng mạng 15 phút.', 'Thu hồi thẻ ngân hàng.', 'Cấm học CNTT.'], ans: 0, detail: 'Biện pháp giáo dục tuyên truyền, nâng cao ý thức cảnh giác.' },
+            { id: 't6_q14', topic: 't6', num: 14, q: 'Biện pháp kỹ thuật cụ thể bảo đảm an toàn thông tin:', options: ['Cài diệt virus, tường lửa (Firewall), mã hóa dữ liệu, sao lưu dự phòng, kiểm soát truy cập.', 'Click link lạ.', 'Dùng phần mềm crack.', 'Public mật khẩu.'], ans: 0, detail: 'Cài diệt virus, tường lửa (Firewall), mã hóa dữ liệu, sao lưu dự phòng, kiểm soát truy cập.' },
+            { id: 't6_q15', topic: 't6', num: 15, q: 'Các cơ quan chuyên trách an ninh mạng:', options: ['Cục An ninh mạng (Bộ Công an), Bộ Tư lệnh Tác chiến không gian mạng (Bộ Quốc phòng), Cục An toàn thông tin (Bộ TT&TT).', 'CSGT, Thuế, Kiểm lâm.', 'Hội sinh viên.', 'Quán net.'], ans: 0, detail: 'Cục An ninh mạng (Bộ Công an), Bộ Tư lệnh Tác chiến không gian mạng (Bộ Quốc phòng), Cục An toàn thông tin (Bộ TT&TT).' }
+        ];
+
+        // STATE
+        const STORAGE_KEY = 'GDQPAN_PRO_STATE_V2';
+        let userState = { answered: {}, bookmarked: [], masteredFc: [], darkMode: false };
+        let practiceList = [], practiceIdx = 0, practiceViewMode = 'single', isShuffleQ = false, isShuffleOpt = false, optionOrderMap = {};
+        let examQuestions = [], examAnswers = {}, examTimer = null, examSecondsLeft = 0, isExamSubmitted = false;
+        let fcList = [...QUESTIONS_DB], fcIdx = 0, isFcFlipped = false;
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    userState.answered = parsed.answered || {};
+                    userState.bookmarked = parsed.bookmarked || [];
+                    userState.masteredFc = parsed.masteredFc || [];
+                    userState.darkMode = !!parsed.darkMode;
+                }
+            } catch (e) {}
+            applyTheme();
+        }
+
+        function saveState() {
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(userState)); } catch (e) {}
+            updateDashboardUI();
+        }
+
+        function toggleDarkMode() {
+            userState.darkMode = !userState.darkMode;
+            applyTheme();
+            saveState();
+        }
+
+        function applyTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            if (userState.darkMode) {
+                html.classList.add('dark');
+                if (icon) icon.className = 'fa-solid fa-sun text-amber-400 text-base';
+            } else {
+                html.classList.remove('dark');
+                if (icon) icon.className = 'fa-solid fa-moon text-base';
+            }
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(`tab-${tabName}`);
+            if (target) target.classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.className = 'nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:bg-white/60');
+            const active = document.getElementById(`nav-${tabName}`);
+            if (active) active.className = 'nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 shadow-sm';
+
+            if (tabName === 'dashboard') updateDashboardUI();
+            if (tabName === 'practice' && practiceList.length === 0) initPracticeList('all');
+            if (tabName === 'flashcard') renderFlashcard();
+            if (tabName === 'search') renderSearchList();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateDashboardUI() {
+            const answeredIds = Object.keys(userState.answered);
+            let correct = 0, wrong = 0;
+            answeredIds.forEach(id => {
+                const q = QUESTIONS_DB.find(x => x.id === id);
+                if (q) { if (userState.answered[id] === q.ans) correct++; else wrong++; }
+            });
+            const acc = answeredIds.length > 0 ? Math.round((correct / answeredIds.length) * 100) : 0;
+            document.getElementById('stat-answered').textContent = answeredIds.length;
+            document.getElementById('stat-accuracy').textContent = `${acc}%`;
+            document.getElementById('stat-wrong').textContent = wrong;
+            document.getElementById('stat-bookmarked').textContent = userState.bookmarked.length;
+
+            const grid = document.getElementById('topics-grid');
+            grid.innerHTML = TOPICS.map(t => {
+                const list = QUESTIONS_DB.filter(q => q.topic === t.id);
+                const total = list.length;
+                let done = 0;
+                list.forEach(q => { if (userState.answered[q.id] !== undefined) done++; });
+                const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+                return `
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-bold px-2.5 py-1 rounded-lg ${t.isCore ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300' : 'bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300'}">${t.code}</span>
+                                <span class="text-xs font-semibold text-slate-400">${done}/${total} (${pct}%)</span>
+                            </div>
+                            <h4 class="font-bold text-base mb-1.5 flex items-start gap-2">
+                                <i class="fa-solid ${t.icon} text-emerald-600 mt-1"></i><span>${t.title}</span>
+                            </h4>
+                            <p class="text-xs text-slate-500 mb-4">${t.desc}</p>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                <div class="h-full bg-emerald-500 rounded-full" style="width: ${pct}%"></div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="startPracticeByTopic('${t.id}')" class="flex-1 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs transition flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-pen-to-square"></i> Luyện (${total})
+                                </button>
+                                <button onclick="startFlashcardByTopic('${t.id}')" class="py-2 px-3 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 font-semibold text-xs transition">
+                                    <i class="fa-solid fa-layer-group"></i> Thẻ nhớ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // PRACTICE
+        function startPracticeByTopic(val) {
+            document.getElementById('practice-topic-select').value = val;
+            initPracticeList(val);
+            switchTab('practice');
+        }
+
+        function startSpecialPractice(type) {
+            document.getElementById('practice-topic-select').value = type;
+            initPracticeList(type);
+            switchTab('practice');
+        }
+
+        function changePracticeFilter() {
+            initPracticeList(document.getElementById('practice-topic-select').value);
+        }
+
+        function initPracticeList(filter) {
+            let base = [];
+            if (filter === 'all') base = [...QUESTIONS_DB];
+            else if (filter === 'core71') base = QUESTIONS_DB.filter(q => ['t1','t2','t3'].includes(q.topic));
+            else if (filter === 'ext56') base = QUESTIONS_DB.filter(q => ['t4','t5','t6'].includes(q.topic));
+            else if (filter === 'wrong') base = QUESTIONS_DB.filter(q => userState.answered[q.id] !== undefined && userState.answered[q.id] !== q.ans);
+            else if (filter === 'bookmarked') base = QUESTIONS_DB.filter(q => userState.bookmarked.includes(q.id));
+            else base = QUESTIONS_DB.filter(q => q.topic === filter);
+
+            if (isShuffleQ) base = shuffleArray([...base]);
+            practiceList = base;
+            practiceIdx = 0;
+            generateOptionOrders();
+            renderPracticeView();
+        }
+
+        function generateOptionOrders() {
+            optionOrderMap = {};
+            practiceList.forEach(q => {
+                optionOrderMap[q.id] = isShuffleOpt ? shuffleArray([0,1,2,3]) : [0,1,2,3];
+            });
+        }
+
+        function toggleShuffleQuestions() {
+            isShuffleQ = !isShuffleQ;
+            const btn = document.getElementById('btn-shuffle-q');
+            btn.className = isShuffleQ ? 'px-3.5 py-2 rounded-xl border border-emerald-500 bg-emerald-50 text-emerald-700 text-xs sm:text-sm font-bold flex items-center gap-2' : 'px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-600 text-xs sm:text-sm font-medium flex items-center gap-2';
+            changePracticeFilter();
+        }
+
+        function toggleShuffleOptions() {
+            isShuffleOpt = !isShuffleOpt;
+            const btn = document.getElementById('btn-shuffle-opt');
+            btn.className = isShuffleOpt ? 'px-3.5 py-2 rounded-xl border border-emerald-500 bg-emerald-50 text-emerald-700 text-xs sm:text-sm font-bold flex items-center gap-2' : 'px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-600 text-xs sm:text-sm font-medium flex items-center gap-2';
+            generateOptionOrders();
+            renderPracticeView();
+        }
+
+        function togglePracticeViewMode() {
+            practiceViewMode = practiceViewMode === 'single' ? 'list' : 'single';
+            document.getElementById('view-mode-label').textContent = practiceViewMode === 'list' ? 'Xem từng câu' : 'Xem danh sách';
+            document.getElementById('practice-single-nav').classList.toggle('hidden', practiceViewMode === 'list');
+            renderPracticeView();
+        }
+
+        function buildCardHTML(q, idx) {
+            const topic = TOPICS.find(t => t.id === q.topic);
+            const userAns = userState.answered[q.id];
+            const isAnswered = userAns !== undefined;
+            const isBmk = userState.bookmarked.includes(q.id);
+            const order = optionOrderMap[q.id] || [0,1,2,3];
+            const letters = ['A', 'B', 'C', 'D'];
+
+            const opts = order.map((origIdx, dIdx) => {
+                let style = 'border-slate-200 dark:border-slate-700 hover:border-emerald-500', badge = 'bg-slate-100 dark:bg-slate-700', icon = '';
+                if (isAnswered) {
+                    if (origIdx === q.ans) {
+                        style = 'border-emerald-500 bg-emerald-50/90 dark:bg-emerald-950/50 ring-1 ring-emerald-500';
+                        badge = 'bg-emerald-600 text-white';
+                        icon = '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>';
+                    } else if (origIdx === userAns) {
+                        style = 'border-rose-500 bg-rose-50/90 dark:bg-rose-950/50 ring-1 ring-rose-500';
+                        badge = 'bg-rose-600 text-white';
+                        icon = '<i class="fa-solid fa-circle-xmark text-rose-600 text-lg"></i>';
+                    } else { style += ' opacity-60'; }
+                }
+                return `
+                    <button onclick="selectPracticeAnswer('${q.id}', ${origIdx})" class="w-full text-left p-4 rounded-xl border-2 transition flex items-start gap-3.5 ${style}">
+                        <span class="w-8 h-8 rounded-lg font-bold text-sm flex items-center justify-center shrink-0 ${badge}">${letters[dIdx]}</span>
+                        <span class="flex-grow text-sm sm:text-base font-medium">${q.options[origIdx]}</span>
+                        ${icon}
+                    </button>
+                `;
+            }).join('');
+
+            let explain = '';
+            if (isAnswered) {
+                const correct = userAns === q.ans;
+                explain = `
+                    <div class="mt-4 p-4 rounded-xl border ${correct ? 'bg-emerald-50 border-emerald-200 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-200' : 'bg-rose-50 border-rose-200 text-rose-900 dark:bg-rose-950/30 dark:text-rose-200'}">
+                        <p class="font-bold text-sm mb-1"><i class="fa-solid fa-lightbulb mr-1"></i> Giải đáp chi tiết:</p>
+                        <p class="text-sm">${q.detail}</p>
+                    </div>
+                `;
+            }
+
+            return `
+                <div id="p-card-${idx}" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 sm:p-7 shadow-sm">
+                    <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100 dark:border-slate-700">
+                        <span class="px-3 py-1 rounded-lg bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300 font-bold text-xs">Câu ${idx+1} / ${practiceList.length} (${topic ? topic.code : ''})</span>
+                        <button onclick="toggleBookmark('${q.id}')" class="px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 ${isBmk ? 'border-amber-400 bg-amber-50 text-amber-700' : 'border-slate-200 text-slate-500'}">
+                            <i class="${isBmk ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i> ${isBmk ? 'Đã lưu' : 'Lưu'}
+                        </button>
+                    </div>
+                    <h3 class="text-base sm:text-xl font-bold mb-5">${q.q}</h3>
+                    <div class="space-y-3">${opts}</div>
+                    ${explain}
+                </div>
+            `;
+        }
+
+        function renderPracticeView() {
+            const container = document.getElementById('practice-question-container');
+            const palette = document.getElementById('practice-palette');
+            const counter = document.getElementById('palette-counter');
+
+            if (practiceList.length === 0) {
+                container.innerHTML = `<div class="bg-white dark:bg-slate-800 rounded-2xl p-10 text-center space-y-3"><h3 class="font-bold">Không có câu hỏi nào!</h3><button onclick="startPracticeByTopic('all')" class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm font-semibold">Xem tất cả 127 câu</button></div>`;
+                palette.innerHTML = '';
+                counter.textContent = '0/0';
+                return;
+            }
+
+            if (practiceViewMode === 'single') {
+                container.innerHTML = buildCardHTML(practiceList[practiceIdx], practiceIdx);
+                document.getElementById('btn-prev-q').disabled = practiceIdx === 0;
+                document.getElementById('btn-next-q').disabled = practiceIdx === practiceList.length - 1;
+            } else {
+                container.innerHTML = practiceList.map((q, i) => buildCardHTML(q, i)).join('');
+            }
+
+            let done = 0;
+            palette.innerHTML = practiceList.map((item, i) => {
+                const ans = userState.answered[item.id];
+                if (ans !== undefined) done++;
+                let cls = 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300';
+                if (ans !== undefined) cls = ans === item.ans ? 'bg-emerald-500 text-white font-bold' : 'bg-rose-500 text-white font-bold';
+                if (practiceViewMode === 'single' && i === practiceIdx) cls += ' ring-2 ring-emerald-600';
+                return `<button onclick="jumpPractice(${i})" class="h-9 rounded-lg text-xs font-semibold ${cls}">${i+1}</button>`;
+            }).join('');
+            counter.textContent = `${done}/${practiceList.length}`;
+        }
+
+        function selectPracticeAnswer(qid, optIdx) {
+            userState.answered[qid] = optIdx;
+            saveState();
+            renderPracticeView();
+        }
+
+        function prevPracticeQuestion() { if (practiceIdx > 0) { practiceIdx--; renderPracticeView(); } }
+        function nextPracticeQuestion() { if (practiceIdx < practiceList.length - 1) { practiceIdx++; renderPracticeView(); } }
+        function jumpPractice(i) {
+            practiceIdx = i;
+            if (practiceViewMode === 'list') document.getElementById(`p-card-${i}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+            else renderPracticeView();
+        }
+
+        function toggleBookmark(qid) {
+            const idx = userState.bookmarked.indexOf(qid);
+            if (idx === -1) userState.bookmarked.push(qid);
+            else userState.bookmarked.splice(idx, 1);
+            saveState();
+            renderPracticeView();
+        }
+
+        // EXAM
+        function startExamFromSetup() {
+            const source = document.getElementById('exam-source').value;
+            const count = parseInt(document.getElementById('exam-count').value);
+            const timeMin = parseInt(document.getElementById('exam-time').value);
+
+            let base = [];
+            if (source === 'all') base = [...QUESTIONS_DB];
+            else if (source === 'core71') base = QUESTIONS_DB.filter(q => ['t1','t2','t3'].includes(q.topic));
+            else if (source === 'ext56') base = QUESTIONS_DB.filter(q => ['t4','t5','t6'].includes(q.topic));
+            else base = QUESTIONS_DB.filter(q => q.topic === source);
+
+            examQuestions = shuffleArray([...base]).slice(0, count);
+            examAnswers = {};
+            isExamSubmitted = false;
+            examSecondsLeft = timeMin * 60;
+
+            document.getElementById('exam-setup').classList.add('hidden');
+            document.getElementById('exam-runner').classList.remove('hidden');
+            document.getElementById('exam-result-banner').classList.add('hidden');
+
+            renderExamUI();
+            if (examTimer) clearInterval(examTimer);
+            examTimer = setInterval(() => {
+                examSecondsLeft--;
+                const m = Math.floor(examSecondsLeft / 60);
+                const s = examSecondsLeft % 60;
+                document.getElementById('exam-timer-display').textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+                if (examSecondsLeft <= 0) { clearInterval(examTimer); submitExam(); }
+            }, 1000);
+        }
+
+        function cancelExam() {
+            if (examTimer) clearInterval(examTimer);
+            document.getElementById('exam-runner').classList.add('hidden');
+            document.getElementById('exam-setup').classList.remove('hidden');
+        }
+
+        function renderExamUI() {
+            const list = document.getElementById('exam-questions-list');
+            const letters = ['A', 'B', 'C', 'D'];
+
+            list.innerHTML = examQuestions.map((q, idx) => {
+                const chosen = examAnswers[q.id];
+                const opts = q.options.map((optText, oIdx) => {
+                    let style = 'border-slate-200 dark:border-slate-700 hover:bg-slate-50', badge = 'bg-slate-100 dark:bg-slate-700';
+                    if (!isExamSubmitted) {
+                        if (chosen === oIdx) { style = 'border-emerald-600 bg-emerald-50 dark:bg-emerald-950/50'; badge = 'bg-emerald-600 text-white'; }
+                    } else {
+                        if (oIdx === q.ans) { style = 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/50'; badge = 'bg-emerald-600 text-white'; }
+                        else if (chosen === oIdx) { style = 'border-rose-500 bg-rose-50 dark:bg-rose-950/50'; badge = 'bg-rose-600 text-white'; }
+                    }
+                    return `
+                        <button onclick="selectExamOption('${q.id}', ${oIdx})" class="w-full text-left p-3.5 rounded-xl border-2 transition flex items-start gap-3 ${style}">
+                            <span class="w-7 h-7 rounded-lg font-bold text-xs flex items-center justify-center shrink-0 ${badge}">${letters[oIdx]}</span>
+                            <span class="text-sm font-medium">${optText}</span>
+                        </button>
+                    `;
+                }).join('');
+
+                let explain = '';
+                if (isExamSubmitted) {
+                    explain = `<div class="mt-3 p-3 rounded-xl bg-slate-100 dark:bg-slate-700 text-xs"><strong class="text-emerald-600">Giải đáp:</strong> ${q.detail}</div>`;
+                }
+
+                return `
+                    <div id="eq-${idx}" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm">
+                        <div class="flex items-center justify-between mb-3"><span class="font-bold text-xs">Câu ${idx+1}</span></div>
+                        <h4 class="font-bold text-base mb-4">${q.q}</h4>
+                        <div class="space-y-2.5">${opts}</div>
+                        ${explain}
+                    </div>
+                `;
+            }).join('');
+
+            const palette = document.getElementById('exam-palette');
+            palette.innerHTML = examQuestions.map((q, idx) => {
+                const chosen = examAnswers[q.id];
+                let cls = 'bg-slate-100 dark:bg-slate-700 text-slate-600';
+                if (!isExamSubmitted && chosen !== undefined) cls = 'bg-emerald-600 text-white font-bold';
+                else if (isExamSubmitted) cls = chosen === q.ans ? 'bg-emerald-500 text-white font-bold' : 'bg-rose-500 text-white font-bold';
+                return `<button onclick="document.getElementById('eq-${idx}').scrollIntoView({behavior:'smooth', block:'center'})" class="h-9 rounded-lg text-xs font-semibold ${cls}">${idx+1}</button>`;
+            }).join('');
+
+            const answeredCount = Object.keys(examAnswers).length;
+            document.getElementById('exam-answered-count').textContent = `${answeredCount} / ${examQuestions.length} câu`;
+        }
+
+        function selectExamOption(qid, optIdx) {
+            if (isExamSubmitted) return;
+            examAnswers[qid] = optIdx;
+            renderExamUI();
+        }
+
+        function submitExam() {
+            if (examTimer) clearInterval(examTimer);
+            isExamSubmitted = true;
+            let correct = 0;
+            examQuestions.forEach(q => { if (examAnswers[q.id] === q.ans) correct++; });
+            const score = ((correct / examQuestions.length) * 10).toFixed(1);
+
+            const banner = document.getElementById('exam-result-banner');
+            banner.classList.remove('hidden');
+            banner.innerHTML = `
+                <div class="text-center space-y-2">
+                    <h3 class="text-2xl font-extrabold text-emerald-600">Kết Quả Bài Thi Thử</h3>
+                    <p class="text-4xl font-extrabold">${score} <span class="text-lg font-normal text-slate-400">/ 10 điểm</span></p>
+                    <p class="text-sm text-slate-600 dark:text-slate-300">Đúng ${correct} / ${examQuestions.length} câu hỏi.</p>
+                    <button onclick="startExamFromSetup()" class="mt-3 px-6 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-sm shadow">Thi Lại Ngay</button>
+                </div>
+            `;
+            renderExamUI();
+            banner.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // FLASHCARD
+        function changeFlashcardTopic() {
+            const val = document.getElementById('fc-topic-select').value;
+            if (val === 'all') fcList = [...QUESTIONS_DB];
+            else if (val === 'mastered') fcList = QUESTIONS_DB.filter(q => userState.masteredFc.includes(q.id));
+            else if (val === 'unmastered') fcList = QUESTIONS_DB.filter(q => !userState.masteredFc.includes(q.id));
+            else fcList = QUESTIONS_DB.filter(q => q.topic === val);
+            fcIdx = 0;
+            isFcFlipped = false;
+            renderFlashcard();
+        }
+
+        function flipFlashcard() {
+            isFcFlipped = !isFcFlipped;
+            const inner = document.getElementById('fc-inner');
+            if (isFcFlipped) inner.classList.add('rotate-y-180');
+            else inner.classList.remove('rotate-y-180');
+        }
+
+        function nextFlashcard() { if (fcIdx < fcList.length - 1) { fcIdx++; isFcFlipped = false; renderFlashcard(); } }
+        function prevFlashcard() { if (fcIdx > 0) { fcIdx--; isFcFlipped = false; renderFlashcard(); } }
+        function shuffleFlashcards() { fcList = shuffleArray([...fcList]); fcIdx = 0; isFcFlipped = false; renderFlashcard(); }
+
+        function markFlashcardStatus(mastered) {
+            if (fcList.length === 0) return;
+            const qid = fcList[fcIdx].id;
+            const idx = userState.masteredFc.indexOf(qid);
+            if (mastered && idx === -1) userState.masteredFc.push(qid);
+            else if (!mastered && idx !== -1) userState.masteredFc.splice(idx, 1);
+            saveState();
+            nextFlashcard();
+        }
+
+        function renderFlashcard() {
+            document.getElementById('fc-mastered-stat').textContent = `Đã thuộc: ${userState.masteredFc.length}/127`;
+            if (fcList.length === 0) {
+                document.getElementById('fc-front-text').textContent = 'Không có thẻ nào!';
+                document.getElementById('fc-counter').textContent = '0/0';
+                return;
+            }
+            const q = fcList[fcIdx];
+            const topic = TOPICS.find(t => t.id === q.topic);
+            const letters = ['A', 'B', 'C', 'D'];
+            const inner = document.getElementById('fc-inner');
+            if (isFcFlipped) inner.classList.add('rotate-y-180');
+            else inner.classList.remove('rotate-y-180');
+
+            document.getElementById('fc-topic-badge').textContent = topic ? topic.title : '';
+            document.getElementById('fc-counter').textContent = `Thẻ ${fcIdx+1} / ${fcList.length}`;
+            document.getElementById('fc-front-text').textContent = q.q;
+            document.getElementById('fc-back-short').textContent = `Đáp án: ${letters[q.ans]}. ${q.options[q.ans]}`;
+            document.getElementById('fc-back-detail').textContent = q.detail;
+        }
+
+        // SEARCH
+        function renderSearchList() {
+            const keyword = (document.getElementById('search-input').value || '').trim().toLowerCase();
+            const filter = document.getElementById('search-topic-filter').value;
+            const container = document.getElementById('search-results-container');
+            const letters = ['A', 'B', 'C', 'D'];
+
+            const filtered = QUESTIONS_DB.filter(q => {
+                if (filter !== 'all' && q.topic !== filter) return false;
+                if (!keyword) return true;
+                return q.q.toLowerCase().includes(keyword) || q.options.some(o => o.toLowerCase().includes(keyword)) || q.detail.toLowerCase().includes(keyword);
+            });
+
+            document.getElementById('search-count-label').textContent = `Tìm thấy ${filtered.length} câu hỏi`;
+            container.innerHTML = filtered.map(q => {
+                const topic = TOPICS.find(t => t.id === q.topic);
+                return `
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm space-y-2">
+                        <div class="text-xs font-bold text-emerald-600">${topic ? topic.code : ''} - Câu ${q.num}</div>
+                        <h4 class="font-bold text-base">${q.q}</h4>
+                        <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-xs sm:text-sm">
+                            <p class="font-bold text-emerald-800 dark:text-emerald-300"><i class="fa-solid fa-check mr-1"></i>Đáp án: ${letters[q.ans]}. ${q.options[q.ans]}</p>
+                            <p class="mt-1 text-slate-600 dark:text-slate-300"><strong>Giải đáp:</strong> ${q.detail}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // UTILS
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function openResetModal() { document.getElementById('reset-modal').classList.remove('hidden'); }
+        function closeResetModal() { document.getElementById('reset-modal').classList.add('hidden'); }
+        function confirmReset() {
+            userState = { answered: {}, bookmarked: [], masteredFc: [], darkMode: userState.darkMode };
+            saveState();
+            closeResetModal();
+            initPracticeList('all');
+        }
+
+        function downloadHTMLFile() {
+            const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+            const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'On_Tap_GDQPAN_127_Cau.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        window.onload = function() {
+            loadState();
+            initPracticeList('all');
+            switchTab('dashboard');
+        };
+    </script>
+</body>
+</html>
